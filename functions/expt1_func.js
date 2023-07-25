@@ -81,3 +81,19 @@ function genLims(canvas, size) {
     
     return([xLims, yLims])
 }
+
+/**
+ * Generates random xy coordinates within the canvas limit
+ * 
+ * @param {number[]} xLim 
+ * @param {number[]} yLim 
+ * @returns {number[]} X & Y coordinates
+ */
+function genLoc(xLim, yLim) {
+    // @ts-ignore
+    var xPos = jsPsych.randomization.randomInt(...xLim);
+    // @ts-ignore
+    var yPos = jsPsych.randomization.randomInt(...yLim);
+    return([xPos, yPos])
+}
+
