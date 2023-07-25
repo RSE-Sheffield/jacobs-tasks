@@ -97,3 +97,24 @@ function genLoc(xLim, yLim) {
     return([xPos, yPos])
 }
 
+/**
+ * Checks a proposed location against an array of existing locations to ensure
+ * there is no overlap between them
+ * 
+ * @param {number[]} propLoc - Proposed location
+ * @param {number[][]} allLocs - Previous locations
+ * @param {number} size - stimulus size
+ * @returns {boolean} Is there an overlap or not?
+ */
+function anyOverlap(propLoc, allLocs, size) {
+
+    var results = []
+    var propRect = genRect(propLoc, size)
+
+    for (let loc of allLocs) {
+        var result = intersects(propRect, genRect(loc, size))
+        results.push(result)
+    }
+
+    return(results.includes(true))
+}
