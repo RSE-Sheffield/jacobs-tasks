@@ -118,3 +118,18 @@ function anyOverlap(propLoc, allLocs, size) {
 
     return(results.includes(true))
 }
+
+/**
+ * Converts an array into an object describing the rect
+ * 
+ * @param {number[]} loc - X and Y coordinates
+ * @param {number} size - stimulus size
+ * @returns {Object.<string, number>} objectdescribing the rect
+ */
+function genRect(loc, size) {
+    return {"x": loc[0],
+            "y": loc[1],
+            "w": size,
+            "h": size}
+}
+
