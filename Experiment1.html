@@ -17,6 +17,8 @@
         const canvas = document.getElementById("canvas");
         const jsPsych = initJsPsych();
 
+        var nStimuli = config.startValue
+        
         var timeline = [];
 
         // Standard fixation object
@@ -29,6 +31,29 @@
                 screen: 'fixation'
             }
         };
+
+        // Generate target array
+        var target_array = {
+            type: jsPsychCanvasButtonResponse,
+            // Befre each run shuffle the available colours and split into used
+            // and unused
+            on_start: function(trial){
+                shuffColours = jsPsych.randomization.shuffle(config.colours)
+                usedCols = shuffColours.slice(0, nStimuli)
+                unusedCols = shuffColours.slice(nStimuli, )
+            },
+            // Draw the used colours on screen
+            stimulus: function(c) {
+                drawRects(c, usedCols);
+            },
+            canvas_size: [canvas.width, canvas.height],
+            trial_duration: config.stimulusDuration,
+            post_trial_gap: config.blankDuration,
+            data: {
+                screen: "memory array"
+            },
+            choices: []
+        }
 
         var expt1_procedure = {
             timeline: [
