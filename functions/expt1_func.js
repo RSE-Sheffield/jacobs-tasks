@@ -133,3 +133,16 @@ function genRect(loc, size) {
             "h": size}
 }
 
+/**
+ * Checks to see if two rectangles intersect
+ * 
+ * @param {Object.<string, number>} rect1 
+ * @param {Object.<string, number>} rect2 
+ * @returns {boolean} - Do they instersect? 
+ */
+function intersects(rect1, rect2) {
+    return !(rect2.x > (rect1.x + rect1.w) ||
+            (rect2.x + rect2.w) < rect1.x ||
+            rect2.y > (rect1.y + rect1.h) ||
+            (rect2.y + rect2.h) < rect1.y);
+}
