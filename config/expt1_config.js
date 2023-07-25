@@ -8,9 +8,9 @@ var config = {
     "colours": ["red", "blue", "yellow",    // Array of potential stimulus colours
                 "green", "orange", "purple",
                 "magenta", "cyan"],
-    "startValue": 2,                        // Starting number od stimuli
+    "startValue": 2,                        // Starting number of stimuli
     "minValue": 2,                          // Minimum number of stimuli
-    "maxValue": 8,                         // Maximum number of stimuli
+    "maxValue": 8,                          // Maximum number of stimuli
     "staircaseUp": 3,                       // Number of correct answers to move up the staircase
     "staircaseDown": 1                      // Number of incorrect answers to move down the staircase
 }
