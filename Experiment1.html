@@ -19,11 +19,15 @@
 
         var timeline = [];
 
+        // Standard fixation object
         var fixation = {
             type: jsPsychHtmlKeyboardResponse,
             stimulus: '<div style="font-size:60px;">+</div>',
             choices: "NO_KEYS",
             trial_duration: config.fixationDuration,
+            data: {
+                screen: 'fixation'
+            }
         };
 
         var expt1_procedure = {
