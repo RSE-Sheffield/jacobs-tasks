@@ -113,6 +113,14 @@
                 target_array,
                 response_display
             ],
+            timeline_variables: [
+                {probe_present: true, correct_response: 0},
+                {probe_present: false, correct_response: 1}
+            ],
+            sample: {
+                type: 'fixed-repetitions',
+                size: config.nTrialReps
+            },
         }; 
 
         timeline.push(expt1_procedure)
