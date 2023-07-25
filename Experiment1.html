@@ -17,7 +17,13 @@
     <script>
 
         const canvas = document.getElementById("canvas");
-        const jsPsych = initJsPsych();
+        const jsPsych = initJsPsych({
+            on_finish: function() {
+                const d = new Date();
+                var filename = d.toISOString() + "_testdata.csv"
+                jsPsych.data.get().localSave('csv', filename);
+            }
+        });
 
         var canvasCentre = [canvas.width/2 - config.stimSize/2, canvas.height/2 - config.stimSize/2]
         var [correctCount, incorrectCount] = [0, 0];
