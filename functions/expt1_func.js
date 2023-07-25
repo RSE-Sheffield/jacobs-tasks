@@ -66,3 +66,18 @@ function drawRect(canvas, xPos, yPos, size, fillColour, strokeColour = "black") 
     ctx.strokeStyle = strokeColour
     ctx.strokeRect(xPos, yPos, size, size);
 }
+
+/** @typedef {[number[], number[]]} canvasLimsTuple */
+/**
+ * Generates the limits within which the stimuli can be drawn on the canvas
+ * 
+ * @param {*} canvas 
+ * @param {number} size - Size of the stimulus (including bounding box)
+ * @returns {canvasLimsTuple} Nested array of canvas limits
+ */
+function genLims(canvas, size) {
+    var xLims = [0, canvas.width - size];
+    var yLims = [0, canvas.height - size];
+    
+    return([xLims, yLims])
+}
