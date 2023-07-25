@@ -46,3 +46,23 @@ function drawRects(canvas, selectedCols) {
     }
 }
 
+/**
+ * Draw a single rectangle with user specified size and fill colour, and a
+ * black border on the canvas
+ * 
+ * @param {*} canvas 
+ * @param {number} xPos
+ * @param {number} yPos 
+ * @param {number} size 
+ * @param {string} fillColour 
+ * @param {string} [strokeColour = "black"]
+ */
+function drawRect(canvas, xPos, yPos, size, fillColour, strokeColour = "black") {
+    var ctx = canvas.getContext("2d");
+
+    ctx.beginPath();
+    ctx.fillStyle = fillColour;
+    ctx.fillRect(xPos, yPos, size, size);
+    ctx.strokeStyle = strokeColour
+    ctx.strokeRect(xPos, yPos, size, size);
+}
