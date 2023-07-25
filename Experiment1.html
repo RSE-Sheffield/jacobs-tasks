@@ -19,6 +19,9 @@
         const canvas = document.getElementById("canvas");
         const jsPsych = initJsPsych();
 
+        var canvasCentre = [canvas.width/2 - config.stimSize/2, canvas.height/2 - config.stimSize/2]
+        var [correctCount, incorrectCount] = [0, 0];
+        
         var nStimuli = config.startValue
         
         var timeline = [];
@@ -55,6 +58,53 @@
                 screen: "memory array"
             },
             choices: []
+        }
+
+        // generate response display
+        var response_display = {
+            type: jsPsychCanvasButtonResponse,
+            // before the trial decide whether the probe will come from the
+            // used or unused colours (based on TL variable)
+            on_start: function(trial) {
+                if (jsPsych.timelineVariable('probe_present')) {
+                    probe_col = usedCols[0];
+                } else {
+                    probe_col = unusedCols[0];
+                }
+            },
+            // Draw the probe rectangle
+            stimulus: function(c) {
+                drawRect(c, ...canvasCentre, config.stimSize, probe_col);
+            },
+            data: {
+                screen: "probe",
+                probe_present: jsPsych.timelineVariable('probe_present'),
+                correct_response: jsPsych.timelineVariable('correct_response'),
+            },
+            // Add more info to the data object, but these things are only
+            // available after the trial has finished
+            on_finish: function(data) {
+                data.probe_colour = probe_col
+                data.correct = data.response == data.correct_response
+                data.nTargets = nStimuli
+
+                // Update nStimuli based on staircase rules set in config file
+                if (data.correct) {
+                    correctCount += 1;
+                    if (correctCount == config.staircaseUp) {
+                        [correctCount, incorrectCount] = [0, 0];
+                        if (nStimuli < config.maxValue) nStimuli += 1;
+                    }
+                } else {
+                    incorrectCount += 1;
+                    if (incorrectCount == config.staircaseDown) {
+                        [correctCount, incorrectCount] = [0, 0];
+                        if (nStimuli > config.minValue) nStimuli -= 1;
+                    }
+                }
+            },
+            canvas_size: [canvas.width, canvas.height],
+            choices: ["yes", "no"]
         }
 
         var expt1_procedure = {
