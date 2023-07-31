@@ -2,17 +2,24 @@
 <html>
   <head>
     <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-call-function.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
     <script>
 
-        const jsPsych = initJsPsych();
+        const jsPsych = initJsPsych({
+          on_finish: function() {
+            const d = new Date();
+            var filename = d.toISOString() + "_expt2_testdata.csv"
+            jsPsych.data.get().localSave('csv', filename);
+          }
+        });
 
         var timeline = [];
 
-        
+
     </script>
 
   </body>
