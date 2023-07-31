@@ -21,7 +21,7 @@
         const jsPsych = initJsPsych({
             on_finish: function() {
                 const d = new Date();
-                var filename = d.toISOString() + "_testdata.csv"
+                var filename = d.toISOString() + "_expt1_testdata.csv"
                 jsPsych.data.get().localSave('csv', filename);
             }
         });
