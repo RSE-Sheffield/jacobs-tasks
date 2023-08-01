@@ -9,10 +9,26 @@
     <script src="config/expt1_config.js"></script>
     <script src="functions/expt1_func.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .colour-btn {
+            font-size: 30px;
+            padding: 10px 20px;
+        }
+
+        .colour-btn-yes {
+            background-color: lightgreen;
+        }
+
+        .colour-btn-no {
+            background-color: lightsalmon;
+        }
+
+    </style>
   </head>
 
   <body>
-    <canvas id="canvas" width="500" height="500">
+    <canvas id="canvas" width="600" height="600">
     </canvas>
 
     <script>
@@ -111,7 +127,14 @@
                 }
             },
             canvas_size: [canvas.width, canvas.height],
-            choices: ["yes", "no"]
+            choices: ["yes", "no"],
+            button_html: [
+                '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+                '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+            ],
+            margin_horizontal: "40px",
+            margin_vertical: "20px",
+
         }
 
         var cursor_off = {
