@@ -7,8 +7,10 @@
   </head>
 
   <body>
-    <script>
+    <canvas id="canvas" width="600" height="600">
+    </canvas>
 
+    <script>
         const jsPsych = initJsPsych({
           on_finish: function() {
             const d = new Date();
@@ -16,6 +18,8 @@
             jsPsych.data.get().localSave('csv', filename);
           }
         });
+      const canvas = document.getElementById("canvas");
+      var canvasCentre = [canvas.width/2, canvas.height/2];
 
         var timeline = [];
 
