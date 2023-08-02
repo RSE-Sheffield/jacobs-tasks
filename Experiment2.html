@@ -76,6 +76,9 @@
         canvas_size: [canvas.width, canvas.height],
         choices: [],
         trial_duration: 3000, //config.fixationDuration,
+        data: {
+          screen: 'memory_array'
+        },
       };
 
       timeline.push(memory_array);
@@ -101,6 +104,9 @@
           '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
           '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
         ],
+        data: {
+          screen: 'probe'
+        },
       };
 
     </script>
