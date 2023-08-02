@@ -21,3 +21,10 @@ function generatePosition(posNumber, radius) {
 
     return([xPos, yPos])
 };
+
+function drawImages(c, stimArray) {
+    const ctx = c.getContext("2d");
+    ctx.translate(...canvasCentre);
+    stimArray.forEach((stim) => stim.drawImage(ctx));
+};
+  
