@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
     <script src="jspsych/plugin-call-function.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
@@ -22,6 +23,19 @@
       var canvasCentre = [canvas.width/2, canvas.height/2];
 
         var timeline = [];
+
+      // Standard fixation object
+      var fixation = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="font-size:60px;">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: 1000, //config.fixationDuration,
+        data: {
+          screen: 'fixation'
+        }
+      };
+
+      timeline.push(fixation);
 
 
     </script>
