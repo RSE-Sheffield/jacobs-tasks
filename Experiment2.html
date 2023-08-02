@@ -3,6 +3,7 @@
   <head>
     <script src="jspsych/jspsych.js"></script>
     <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-canvas-button-response.js"></script>
     <script src="jspsych/plugin-call-function.js"></script>
     <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
@@ -37,6 +38,20 @@
 
       timeline.push(fixation);
 
+      var memory_array = {
+        type: jsPsychCanvasButtonResponse,
+        stimulus: function(c) {
+        },
+        canvas_size: [canvas.width, canvas.height],
+        choices: [],
+      };
+
+      var response_screen = {
+        type: jsPsychCanvasButtonResponse,
+        stimulus: function(c) {
+        },
+        canvas_size: [canvas.width, canvas.height],
+      };
 
     </script>
 
