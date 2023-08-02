@@ -3,7 +3,7 @@ function stimStruct(img_number, posNumber) {
     if (posNumber == 0) {
         this.position = [0, 0];
     } else {
-        this.position = generatePosition(posNumber, config.radius);
+        this.position = generatePosition(posNumber, expt2_config.radius);
     }
     this.drawImage = function(ctx) {
         var img = document.createElement("img");
