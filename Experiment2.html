@@ -62,8 +62,6 @@
         }
       };
 
-      timeline.push(fixation);
-
       var memory_array = {
         type: jsPsychCanvasButtonResponse,
         on_start: function(trial){
@@ -80,8 +78,6 @@
           screen: 'memory_array'
         },
       };
-
-      timeline.push(memory_array);
 
       var response_screen = {
         type: jsPsychCanvasButtonResponse,
