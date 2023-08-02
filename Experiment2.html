@@ -80,12 +80,27 @@
 
       timeline.push(memory_array);
 
-
       var response_screen = {
         type: jsPsychCanvasButtonResponse,
+        on_start: function(trial) {
+          probe = generateProbe(probe_present);
+        },
         stimulus: function(c) {
+          const ctx = c.getContext("2d");
+          ctx.translate(...canvasCentre);
+          probe.drawImage(ctx)
         },
         canvas_size: [canvas.width, canvas.height],
+        choices: ["Yes - Sure", "Yes - Think", "Yes - Guess",
+                  "No - Sure", "No - Think", "No - Guess"],
+        button_html: [
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+        ],
       };
 
     </script>
