@@ -109,6 +109,34 @@
         },
       };
 
+      var expt2_procedure = {
+            timeline: [
+                //cursor_off,
+                fixation,
+                memory_array,
+                //cursor_on,
+                response_screen
+            ],
+            timeline_variables: [
+                {nStims: 2, timePerItem: 250, probe_present: true, correct_response: 0},
+                {nStims: 2, timePerItem: 500, probe_present: true, correct_response: 0},
+                {nStims: 6, timePerItem: 250, probe_present: true, correct_response: 0},
+                {nStims: 6, timePerItem: 500, probe_present: true, correct_response: 0},
+                {nStims: 2, timePerItem: 250, probe_present: false, correct_response: 1},
+                {nStims: 2, timePerItem: 500, probe_present: false, correct_response: 1},
+                {nStims: 6, timePerItem: 250, probe_present: false, correct_response: 1},
+                {nStims: 6, timePerItem: 500, probe_present: false, correct_response: 1},
+            ],
+            sample: {
+                type: 'fixed-repetitions',
+                size: 1
+            },
+        }; 
+
+      timeline.push(expt2_procedure);
+
+      jsPsych.run(timeline)
+
     </script>
 
   </body>
