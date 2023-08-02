@@ -27,4 +27,16 @@ function drawImages(c, stimArray) {
     ctx.translate(...canvasCentre);
     stimArray.forEach((stim) => stim.drawImage(ctx));
 };
+
+function generateStims(nStims){
+    const stimArray = []
+    const imgArray = allStims.slice(0, nStims)
+    allStims = allStims.slice(nStims)
+    const posArray = jspShuffle(positionArr).slice(0, nStims)
+    for  (let i = 0; i < nStims; i++) {
+        const stim = new stimStruct(imgArray[i], posArray[i])
+        stimArray.push(stim)
+    }
+    return stimArray
+};
   
