@@ -85,9 +85,7 @@
           probe = generateProbe(probe_present);
         },
         stimulus: function(c) {
-          const ctx = c.getContext("2d");
-          ctx.translate(...canvasCentre);
-          probe.drawImage(ctx)
+          drawImages(c, [probe]);
         },
         canvas_size: [canvas.width, canvas.height],
         choices: ["Yes - Sure", "Yes - Think", "Yes - Guess",
