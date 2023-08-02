@@ -39,4 +39,15 @@ function generateStims(nStims){
     }
     return stimArray
 };
+
+function generateProbe(probePresent) {
+    if (probePresent) {
+        probe = stimArray[0];
+        probe.position = [0, 0]
+    } else {
+        probe = new stimStruct(allStims[0], 0);
+        allStims = allStims.slice(1)
+    }
+    return probe
+};
   
