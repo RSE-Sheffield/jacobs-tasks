@@ -31,13 +31,13 @@
     </canvas>
 
     <script>
-        const jsPsych = initJsPsych({
-          on_finish: function() {
-            const d = new Date();
-            var filename = d.toISOString() + "_expt2_testdata.csv"
-            jsPsych.data.get().localSave('csv', filename);
-          }
-        });
+      const jsPsych = initJsPsych({
+        on_finish: function() {
+          const d = new Date();
+          var filename = d.toISOString() + "_expt2_testdata.csv"
+          jsPsych.data.get().localSave('csv', filename);
+        }
+      });
       const canvas = document.getElementById("canvas");
 
       const imgSize = 96;
@@ -49,7 +49,7 @@
       let allStims = Array.from({length: 454}, (value, index) => index + 1)
       allStims = jspShuffle(allStims)
 
-        var timeline = [];
+      var timeline = [];
 
       // Standard fixation object
       var fixation = {
@@ -65,15 +65,16 @@
       var memory_array = {
         type: jsPsychCanvasButtonResponse,
         on_start: function(trial){
-          stimArray = generateStims(nStims);
+          stimArray = generateStims(jsPsych.timelineVariable('nStims'));
         },
         stimulus: function(c) {
-          // pass the array to the draw images function
           drawImages(c, stimArray);
         },
         canvas_size: [canvas.width, canvas.height],
         choices: [],
-        trial_duration: 3000, //config.fixationDuration,
+        trial_duration: function(){
+          return jsPsych.timelineVariable('nStims') * jsPsych.timelineVariable('timePerItem');
+        },
         data: {
           screen: 'memory_array'
         },
@@ -82,7 +83,7 @@
       var response_screen = {
         type: jsPsychCanvasButtonResponse,
         on_start: function(trial) {
-          probe = generateProbe(probe_present);
+          probe = generateProbe(jsPsych.timelineVariable('probe_present'));
         },
         stimulus: function(c) {
           drawImages(c, [probe]);
