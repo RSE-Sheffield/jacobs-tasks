@@ -11,3 +11,13 @@ function stimStruct(img_number, posNumber) {
         img.onload = () => {ctx.drawImage(img, ...this.position);};
     }
 };
+
+function generatePosition(posNumber, radius) {
+    // This returns position relative to the centre of a circle, and will
+    // have to be translated to absolute canvas position
+    posInRad = posNumber*Math.PI/4
+    xPos = Math.round(Math.cos(posInRad) * radius) - imgSize/2;
+    yPos = Math.round(Math.sin(posInRad) * radius) - imgSize/2;
+
+    return([xPos, yPos])
+};
