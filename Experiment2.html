@@ -51,6 +51,12 @@
 
       var timeline = [];
 
+      let trialCombos = jsPsych.randomization.factorial({
+        nItems: expt2_config.nItems,
+        timePerItem: expt2_config.timePerItem,
+        probePresent: expt2_config.probePresent
+      })
+
       // Standard fixation object
       var fixation = {
         type: jsPsychHtmlKeyboardResponse,
@@ -112,16 +118,7 @@
                 //cursor_on,
                 response_screen
             ],
-            timeline_variables: [
-                {nStims: 2, timePerItem: 250, probe_present: true, correct_response: 0},
-                {nStims: 2, timePerItem: 500, probe_present: true, correct_response: 0},
-                {nStims: 6, timePerItem: 250, probe_present: true, correct_response: 0},
-                {nStims: 6, timePerItem: 500, probe_present: true, correct_response: 0},
-                {nStims: 2, timePerItem: 250, probe_present: false, correct_response: 1},
-                {nStims: 2, timePerItem: 500, probe_present: false, correct_response: 1},
-                {nStims: 6, timePerItem: 250, probe_present: false, correct_response: 1},
-                {nStims: 6, timePerItem: 500, probe_present: false, correct_response: 1},
-            ],
+            timeline_variables: trialCombos,
             sample: {
                 type: 'fixed-repetitions',
                 size: 1

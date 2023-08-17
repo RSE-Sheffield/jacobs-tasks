@@ -4,4 +4,5 @@ var expt2_config = {
     fixationDuration: 250,
     nItems: [2, 6],
     timePerItem: [250, 500],
+    probePresent: [true, false],
 }
