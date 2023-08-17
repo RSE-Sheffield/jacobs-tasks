@@ -5,4 +5,5 @@ var expt2_config = {
     nItems: [2, 6],
     timePerItem: [250, 500],
     probePresent: [true, false],
+    nTrialReps: 1,
 }
