@@ -71,7 +71,7 @@
       var memory_array = {
         type: jsPsychCanvasButtonResponse,
         on_start: function(trial){
-          stimArray = generateStims(jsPsych.timelineVariable('nStims'));
+          stimArray = generateStims(jsPsych.timelineVariable('nItems'));
         },
         stimulus: function(c) {
           drawImages(c, stimArray);
@@ -79,7 +79,7 @@
         canvas_size: [canvas.width, canvas.height],
         choices: [],
         trial_duration: function(){
-          return jsPsych.timelineVariable('nStims') * jsPsych.timelineVariable('timePerItem');
+          return jsPsych.timelineVariable('nItems') * jsPsych.timelineVariable('timePerItem');
         },
         data: {
           screen: 'memory_array'
@@ -89,7 +89,7 @@
       var response_screen = {
         type: jsPsychCanvasButtonResponse,
         on_start: function(trial) {
-          probe = generateProbe(jsPsych.timelineVariable('probe_present'));
+          probe = generateProbe(jsPsych.timelineVariable('probePresent'));
         },
         stimulus: function(c) {
           drawImages(c, [probe]);
