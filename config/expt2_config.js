@@ -8,4 +8,12 @@ var expt2_config = {
     timePerItem: [250, 500],
     probePresent: [true, false],
     nTrialReps: 1,
+    responseOptions: [
+        "Yes - Sure",
+        "Yes - Think",
+        "Yes - Guess",
+        "No - Guess", 
+        "No - Sure",
+        "No - Think",
+    ]
 }
