@@ -63,6 +63,7 @@
         stimulus: '<div style="font-size:60px;">+</div>',
         choices: "NO_KEYS",
         trial_duration: expt2_config.fixationDuration,
+        post_trial_gap: expt2_config.fixationPostTrial,
         data: {
           screen: 'fixation'
         }
@@ -81,6 +82,7 @@
         trial_duration: function(){
           return jsPsych.timelineVariable('nItems') * jsPsych.timelineVariable('timePerItem');
         },
+        post_trial_gap: expt2_config.arrayPostTrial,
         data: {
           screen: 'memory_array'
         },
