@@ -1,0 +1,12 @@
+.colour-btn {
+    font-size: 30px;
+    padding: 10px 20px;
+}
+
+.colour-btn-yes {
+    background-color: lightgreen;
+}
+
+.colour-btn-no {
+    background-color: lightsalmon;
+}
