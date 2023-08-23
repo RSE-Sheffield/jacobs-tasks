@@ -3,6 +3,7 @@ var [correctCount, incorrectCount] = [0, 0];
 
 var nStimuli = expt1_config.startValue
 
+// Generate fixation object
 var fixation = generateFixation(
     expt1_config.fixationDuration,
     expt1_config.fixationPostTrial
@@ -14,7 +15,7 @@ var target_array = {
     // Befre each run shuffle the available colours and split into used
     // and unused
     on_start: function(trial){
-        shuffColours = jsPsych.randomization.shuffle(expt1_config.colours)
+        shuffColours = jspShuffle(expt1_config.colours)
         usedCols = shuffColours.slice(0, nStimuli)
         unusedCols = shuffColours.slice(nStimuli, )
     },
@@ -85,6 +86,7 @@ var response_display = {
 
 }
 
+// Pull items into a single procedure 
 var expt1_procedure = {
     timeline: [
         cursor_off,
@@ -102,5 +104,7 @@ var expt1_procedure = {
         size: expt1_config.nTrialReps
     },
 };
+
+// TODO: Need to add a way to pass the outcome (final number of items) of this task to a later task 
 
 mainTimeline.push(expt1_procedure)
