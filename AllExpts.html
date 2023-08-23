@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="js/jspsych/jspsych.js"></script>
+    <link href="js/jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+
+  <script>
+    const jsPsych = initJsPsych();
+    const canvas = document.getElementById("canvas");
+    const mainTimeline = [];
+  </script>
+  <script>
+    jsPsych.run(mainTimeline)
+  </script>
+
+</body>
+
+</html>
