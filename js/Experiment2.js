@@ -6,18 +6,21 @@ let stimArray;
 let allStims = Array.from({length: 454}, (value, index) => index + 1)
 allStims = jspShuffle(allStims)
 
+// Generate all the different conditions
 let trialCombos = jsPsych.randomization.factorial({
     nItems: expt2_config.nItems,
     timePerItem: expt2_config.timePerItem,
     probePresent: expt2_config.probePresent
 })
 
+// Generate fixation object
 var fixation = generateFixation(
     expt2_config.fixationDuration,
     expt2_config.fixationPostTrial,
 );
 
-var memory_array = {
+// Generate array of targets
+var target_array = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial){
         stimArray = generateStims(jsPsych.timelineVariable('nItems'));
@@ -32,11 +35,12 @@ var memory_array = {
     },
     post_trial_gap: expt2_config.arrayPostTrial,
     data: {
-        screen: 'memory_array'
+        screen: 'memory array'
     },
 };
 
-var response_screen = {
+// Generate the response display
+var response_display = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial) {
         probe = generateProbe(jsPsych.timelineVariable('probePresent'));
@@ -70,6 +74,7 @@ var response_screen = {
     },
 };
 
+// Pull items into a single procedure
 var expt2_procedure = {
     timeline: [
         cursor_off,
@@ -84,5 +89,7 @@ var expt2_procedure = {
         size: expt2_config.nTrialReps,
     },
 }; 
+
+// TODO: Need to add a way of incorporating Meta-capacity prompts and feedback conditionally into timeline based on config
 
 mainTimeline.push(expt2_procedure);
