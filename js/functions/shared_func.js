@@ -12,6 +12,8 @@ function generateFixation(duration, postTrial){
     };
 }
 
+var jspShuffle = jsPsych.randomization.shuffle
+
 // Hide cursor
 var cursor_off = {
     type: jsPsychCallFunction,

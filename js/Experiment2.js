@@ -3,7 +3,6 @@ const canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
 const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
 
 let stimArray;
-let jspShuffle = jsPsych.randomization.shuffle
 let allStims = Array.from({length: 454}, (value, index) => index + 1)
 allStims = jspShuffle(allStims)
 
