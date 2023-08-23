@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-canvas-button-response.js"></script>
+    <script src="jspsych/plugin-call-function.js"></script>
+    <script src="config/expt2_config.js"></script>
+    <script src="functions/expt2_func.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+
+    <style>
+      .colour-btn {
+          font-size: 30px;
+          padding: 10px 20px;
+      }
+
+      .colour-btn-yes {
+          background-color: lightgreen;
+      }
+
+      .colour-btn-no {
+          background-color: lightsalmon;
+      }
+      
+      </style>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="600" height="600">
+    </canvas>
+
+    <script>
+      const jsPsych = initJsPsych({
+        on_finish: function() {
+          const d = new Date();
+          var filename = d.toISOString() + "_expt2_testdata.csv"
+          jsPsych.data.get().localSave('csv', filename);
+        }
+      });
+      const canvas = document.getElementById("canvas");
+
+      const imgSize = 96;
+      const canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
+      const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
+      
+      let stimArray;
+      let jspShuffle = jsPsych.randomization.shuffle
+      let allStims = Array.from({length: 454}, (value, index) => index + 1)
+      allStims = jspShuffle(allStims)
+
+      var timeline = [];
+
+      let trialCombos = jsPsych.randomization.factorial({
+        nItems: expt2_config.nItems,
+        timePerItem: expt2_config.timePerItem,
+        probePresent: expt2_config.probePresent
+      })
+
+      // Standard fixation object
+      var fixation = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<div style="font-size:60px;">+</div>',
+        choices: "NO_KEYS",
+        trial_duration: expt2_config.fixationDuration,
+        post_trial_gap: expt2_config.fixationPostTrial,
+        data: {
+          screen: 'fixation'
+        }
+      };
+
+      var memory_array = {
+        type: jsPsychCanvasButtonResponse,
+        on_start: function(trial){
+          stimArray = generateStims(jsPsych.timelineVariable('nItems'));
+        },
+        stimulus: function(c) {
+          drawImages(c, stimArray);
+        },
+        canvas_size: [canvas.width, canvas.height],
+        choices: [],
+        trial_duration: function(){
+          return jsPsych.timelineVariable('nItems') * jsPsych.timelineVariable('timePerItem');
+        },
+        post_trial_gap: expt2_config.arrayPostTrial,
+        data: {
+          screen: 'memory_array'
+        },
+      };
+
+      var response_screen = {
+        type: jsPsychCanvasButtonResponse,
+        on_start: function(trial) {
+          probe = generateProbe(jsPsych.timelineVariable('probePresent'));
+        },
+        stimulus: function(c) {
+          drawImages(c, [probe]);
+        },
+        canvas_size: [canvas.width, canvas.height],
+        choices: expt2_config.responseOptions,
+        button_html: [
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+          '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+        ],
+        data: {
+          screen: 'probe',
+          nItems: jsPsych.timelineVariable('nItems'),
+          timePerItem: jsPsych.timelineVariable('timePerItem'),
+          timePerItem: jsPsych.timelineVariable('timePerItem'),
+          probePresent: jsPsych.timelineVariable('probePresent')
+
+        },
+        on_finish: function(data) {
+          data.Stimulus = probe.path.split("/").pop();
+          data.responseProbeSeen = data.response < 3;
+          data.responseConfidence = data.response % 3
+          data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
+        },
+      };
+
+      var expt2_procedure = {
+            timeline: [
+                //cursor_off,
+                fixation,
+                memory_array,
+                //cursor_on,
+                response_screen
+            ],
+            timeline_variables: trialCombos,
+            sample: {
+                type: 'fixed-repetitions',
+                size: expt2_config.nTrialReps,
+            },
+        }; 
+
+      timeline.push(expt2_procedure);
+
+      jsPsych.run(timeline)
+
+    </script>
+
+  </body>
+
+</html>
