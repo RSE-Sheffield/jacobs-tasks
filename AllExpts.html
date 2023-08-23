@@ -3,7 +3,15 @@
 
   <head>
     <script src="js/jspsych/jspsych.js"></script>
+    <script src="js/jspsych/plugin-canvas-button-response.js"></script>
+    <script src="js/jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="js/jspsych/plugin-call-function.js"></script>
+    <script src="js/functions/shared_func.js"></script>
+    <script src="js/functions/expt1_func.js"></script>
+    <script src="config/expt1_config.js"></script>
+    
     <link href="js/jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <link href="css/custom-style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -14,6 +22,7 @@
     const canvas = document.getElementById("canvas");
     const mainTimeline = [];
   </script>
+  <script src="js/Experiment1.js"></script>
   <script>
     jsPsych.run(mainTimeline)
   </script>
