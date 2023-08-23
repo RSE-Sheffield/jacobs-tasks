@@ -69,7 +69,11 @@ var response_display = {
     on_finish: function(data) {
         data.Stimulus = probe.path.split("/").pop();
         data.responseProbeSeen = data.response < 3;
-        data.responseConfidence = data.response % 3
+        if (data.responseProbeSeen === 1) {
+            data.responseConfidence = data.response % 3
+        } else {
+            data.responseConfidence = 6 - data.response % 3
+        }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
     },
 };
