@@ -1,5 +1,5 @@
 const imgSize = 96;
-const canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
+var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
 const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
 
 let stimArray;
@@ -12,7 +12,6 @@ let trialCombos = jsPsych.randomization.factorial({
     probePresent: expt2_config.probePresent
 })
 
-// Standard fixation object
 var fixation = generateFixation(
     expt2_config.fixationDuration,
     expt2_config.fixationPostTrial,
