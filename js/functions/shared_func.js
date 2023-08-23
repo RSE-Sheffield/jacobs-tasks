@@ -12,3 +12,18 @@ function generateFixation(duration, postTrial){
     };
 }
 
+// Hide cursor
+var cursor_off = {
+    type: jsPsychCallFunction,
+    func: function() {
+        document.body.style.cursor= "none";
+    }
+}
+
+// Show cursor
+var cursor_on = {
+    type: jsPsychCallFunction,
+    func: function() {
+        document.body.style.cursor= "auto";
+    }
+}
