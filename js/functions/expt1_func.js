@@ -13,7 +13,7 @@
  */
 function drawRects(canvas, selectedCols) {
 
-    var fullSize = config.stimSize + 2 * config.stimBord
+    var fullSize = expt1_config.stimSize + 2 * expt1_config.stimBord
     
     var canvasLims = genLims(canvas, fullSize);
 
@@ -40,9 +40,9 @@ function drawRects(canvas, selectedCols) {
         
         // Calulate the position if the stimulus relative to the border
         // coordinates
-        var xStim = xBord + config.stimBord;
-        var yStim = yBord + config.stimBord;
-        drawRect(canvas, xStim, yStim, config.stimSize, colour)
+        var xStim = xBord + expt1_config.stimBord;
+        var yStim = yBord + expt1_config.stimBord;
+        drawRect(canvas, xStim, yStim, expt1_config.stimSize, colour)
     }
 }
 
