@@ -2,11 +2,13 @@ var canvasCentre = [canvas.width/2 - expt1_config.stimSize/2, canvas.height/2 - 
 var [correctCount, incorrectCount] = [0, 0];
 
 var nStimuli = expt1_config.startValue
+var taskN = 1;
 
 // Generate fixation object
 var fixation = generateFixation(
     expt1_config.fixationDuration,
-    expt1_config.fixationPostTrial
+    expt1_config.fixationPostTrial,
+    taskN
 );
 
 // Generate target array
@@ -27,7 +29,8 @@ var target_array = {
     trial_duration: expt1_config.stimulusDuration,
     post_trial_gap: expt1_config.blankDuration,
     data: {
-        screen: "memory array"
+        screen: "memory array",
+        task: taskN
     },
     choices: []
 }
@@ -51,6 +54,7 @@ var response_display = {
     },
     data: {
         screen: "probe",
+        task: taskN,
         probe_present: jsPsych.timelineVariable('probe_present'),
         correct_response: jsPsych.timelineVariable('correct_response'),
     },

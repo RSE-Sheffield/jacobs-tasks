@@ -1,4 +1,4 @@
-function generateFixation(duration, postTrial){
+function generateFixation(duration, postTrial, taskN){
     // Standard fixation object
     return {
         type: jsPsychHtmlKeyboardResponse,
@@ -7,7 +7,8 @@ function generateFixation(duration, postTrial){
         trial_duration: duration,
         post_trial_gap: postTrial, 
         data: {
-            screen: 'fixation'
+            screen: 'fixation',
+            task: taskN,
         }
     };
 }

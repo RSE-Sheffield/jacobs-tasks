@@ -5,6 +5,7 @@ const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
 let stimArray;
 let allStims = Array.from({length: 454}, (value, index) => index + 1)
 allStims = jspShuffle(allStims)
+var taskN = 2;
 
 // Generate all the different conditions
 let trialCombos = jsPsych.randomization.factorial({
@@ -17,6 +18,7 @@ let trialCombos = jsPsych.randomization.factorial({
 var fixation = generateFixation(
     expt2_config.fixationDuration,
     expt2_config.fixationPostTrial,
+    taskN
 );
 
 // Generate array of targets
@@ -35,7 +37,8 @@ var target_array = {
     },
     post_trial_gap: expt2_config.arrayPostTrial,
     data: {
-        screen: 'memory array'
+        screen: 'memory array',
+        task: taskN
     },
 };
 
@@ -60,6 +63,7 @@ var response_display = {
     ],
     data: {
         screen: 'probe',
+        task: taskN,
         nItems: jsPsych.timelineVariable('nItems'),
         timePerItem: jsPsych.timelineVariable('timePerItem'),
         timePerItem: jsPsych.timelineVariable('timePerItem'),
