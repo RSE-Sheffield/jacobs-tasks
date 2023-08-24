@@ -1,4 +1,4 @@
-//@ts-check
+////@ts-check
 
 /**
  * Draw multiple rectangles on the canvas one for each colour provided in the

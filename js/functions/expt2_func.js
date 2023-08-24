@@ -1,3 +1,5 @@
+////@ts-check
+
 function stimStruct(img_number, posNumber) {
     this.path = "./img/Picture" + img_number + ".png";
     if (posNumber == 0) {
@@ -15,9 +17,9 @@ function stimStruct(img_number, posNumber) {
 function generatePosition(posNumber, radius) {
     // This returns position relative to the centre of a circle, and will
     // have to be translated to absolute canvas position
-    posInRad = posNumber*Math.PI/4
-    xPos = Math.round(Math.cos(posInRad) * radius);
-    yPos = Math.round(Math.sin(posInRad) * radius);
+    var posInRad = posNumber*Math.PI/4
+    var xPos = Math.round(Math.cos(posInRad) * radius);
+    var yPos = Math.round(Math.sin(posInRad) * radius);
 
     return([xPos, yPos])
 };
@@ -41,6 +43,7 @@ function generateStims(nStims){
 };
 
 function generateProbe(probePresent) {
+    var probe;
     if (probePresent) {
         probe = stimArray[0];
         probe.position = [0, 0]
