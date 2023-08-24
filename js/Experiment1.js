@@ -43,6 +43,7 @@ var response_display = {
         } else {
             probe_col = unusedCols[0];
         }
+        trial.data.probe_colour = probe_col;
     },
     // Draw the probe rectangle
     stimulus: function(c) {
@@ -56,7 +57,6 @@ var response_display = {
     // Add more info to the data object, but these things are only
     // available after the trial has finished
     on_finish: function(data) {
-        data.probe_colour = probe_col
         data.correct = data.response == data.correct_response
         data.nTargets = nStimuli
 
