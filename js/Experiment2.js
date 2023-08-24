@@ -5,6 +5,8 @@ const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
 let stimArray;
 let allStims = Array.from({length: 454}, (value, index) => index + 1)
 allStims = jspShuffle(allStims)
+let targetsUsed = {};
+let key;
 var taskN = 2;
 
 // Generate all the different conditions
@@ -25,7 +27,11 @@ var fixation = generateFixation(
 var target_array = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial){
+        var nItems = jsPsych.timelineVariable('nItems');
+        var timePerItem = jsPsych.timelineVariable('timePerItem');
+        key = String(nItems) + "_" + String(timePerItem);
         stimArray = generateStims(jsPsych.timelineVariable('nItems'));
+        if (!(key in targetsUsed)) targetsUsed[key] = [];
     },
     stimulus: function(c) {
         drawImages(c, stimArray);
@@ -79,6 +85,8 @@ var response_display = {
             data.responseConfidence = 6 - data.response % 3
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
+        
+        targetsUsed[key].push(...stimArray)
     },
 };
 

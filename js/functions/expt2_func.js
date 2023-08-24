@@ -45,10 +45,10 @@ function generateStims(nStims){
 function generateProbe(probePresent) {
     var probe;
     if (probePresent) {
-        probe = stimArray[0];
+        probe = stimArray.pop();
         probe.position = [0, 0]
     } else {
-        probe = new stimStruct(allStims[0], 0);
+        probe = new stimStruct(allStims.pop(), 0);
         allStims = allStims.slice(1)
     }
     return probe
