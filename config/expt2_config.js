@@ -13,7 +13,7 @@ var expt2_config = {
         "Yes - Think",
         "Yes - Guess",
         "No - Guess", 
-        "No - Sure",
         "No - Think",
+        "No - Sure",
     ]
 }
