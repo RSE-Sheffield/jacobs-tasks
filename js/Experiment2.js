@@ -83,9 +83,9 @@ var expt2_procedure = {
     timeline: [
         cursor_off,
         fixation,
-        memory_array,
+        target_array,
         cursor_on,
-        response_screen
+        response_display
     ],
     timeline_variables: trialCombos,
     sample: {
