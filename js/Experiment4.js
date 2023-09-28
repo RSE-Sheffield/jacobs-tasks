@@ -48,7 +48,7 @@ var response_display_expt4 = {
         task: taskN,
         nItems: jsPsych.timelineVariable('nItems'),
         timePerItem: jsPsych.timelineVariable('timePerItem'),
-        probePresent: jsPsych.timelineVariable('probePresent')
+        probePresent: jsPsych.timelineVariable('novelStim')
 
     },
     on_finish: function(data) {
