@@ -28,3 +28,12 @@ var cursor_on = {
         document.body.style.cursor= "auto";
     }
 }
+
+function genTargetsUsed(trialCombos, filtVar) {
+    let targetsUsed = {}
+    let filt_combos = trialCombos.filter(item => item[filtVar] == true);
+    let keyArr = filt_combos.map(el => `${el.nItems}_${el.timePerItem}`);
+    keyArr.forEach(el => {targetsUsed[el] = []});
+
+    return targetsUsed
+}

@@ -1,28 +1,28 @@
 ////@ts-check
-function setupStandalone(){
-    let allStims = Array.from({length: 454}, (value, index) => index + 1)
-    allStims = jspShuffle(allStims)
-    let targetsUsed = generateTargets(allStims);
+function setupStandalone(targetsUsed, itemsPerCond){
+    let allStims = Array.from({length: 454}, (value, index) => index + 1);
+    allStims = jspShuffle(allStims);
+    targetsUsed = generateTargets(allStims, targetsUsed, itemsPerCond);
 
+    return [allStims, targetsUsed]
 }
 
-// Need function to generate targets
+function generateTargets(allStims, targetsUsed, itemsPerCond){
+    // We need to know the number of different conditions (generated from the config file)
+    // and number of trials per condition
 
-function stimStruct(img_number) {
-    this.path = "./img/Picture" + img_number + ".png";
-    this.position = [0, 0];
-    this.drawImage = function(ctx) {
-        var img = document.createElement("img");
-        img.src = this.path;
-        img.onload = () => {ctx.drawImage(img, ...this.position);};
+    // For each condition grab the number of trials from the allStims array and
+    // put them in the targetsUsed object under that condition
+
+    for (key of Object.keys(targetsUsed)) {
+        values = allStims.slice(0, itemsPerCond);
+        allStims = allStims.slice(itemsPerCond);
+        targetsUsed[key].push(...values);
     }
-};
 
-function drawImages(c, stimArray) {
-    const ctx = c.getContext("2d");
-    ctx.translate(...canvasCentre);
-    stimArray.forEach((stim) => stim.drawImage(ctx));
-};
+    return targetsUsed
+}
+
 
 function generateStims(nStims){
     const stimArray = []

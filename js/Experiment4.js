@@ -10,6 +10,12 @@ let trialCombos_expt4 = jsPsych.randomization.factorial({
     novelStim: expt4_config.novelStim
 })
 
+// Need to generate dummy targetsUsed object for standalone version
+if (typeof(targetsUsed) === 'undefined') {
+    var targetsUsed = genTargetsUsed(trialCombos_expt4, "novelStim");
+    var [allStims, targetsUsed] = setupStandalone(targetsUsed, expt4_config.nTrialReps);
+}
+
 
 // Generate fixation object
 var fixation_expt4 = generateFixation(
