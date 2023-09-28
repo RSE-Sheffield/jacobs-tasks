@@ -1,12 +1,11 @@
-const imgSize = 96;
 var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
 const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
 
-let stimArray;
-let allStims = Array.from({length: 454}, (value, index) => index + 1)
+var stimArray;
+var allStims = Array.from({length: 454}, (value, index) => index + 1)
 allStims = jspShuffle(allStims)
-let targetsUsed = {};
-let key;
+var targetsUsed = {};
+var key;
 var taskN = 2;
 
 // Generate all the different conditions
