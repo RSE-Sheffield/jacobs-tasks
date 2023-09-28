@@ -4,21 +4,22 @@ var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
 var taskN = 4;
 
 // Generate all the different conditions
-let trialCombos = jsPsych.randomization.factorial({
-    nItems: expt2_config.nItems,
-    timePerItem: expt2_config.timePerItem,
-    probePresent: expt2_config.probePresent
+let trialCombos_expt4 = jsPsych.randomization.factorial({
+    nItems: expt4_config.nItems,
+    timePerItem: expt4_config.timePerItem,
+    novelStim: expt4_config.novelStim
 })
 
+
 // Generate fixation object
-var fixation = generateFixation(
+var fixation_expt4 = generateFixation(
     expt4_config.fixationDuration,
     expt4_config.fixationPostTrial,
     taskN
 );
 
 // Generate the response display
-var response_display = {
+var response_display_expt4 = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial) {
         probe = generateProbe(jsPsych.timelineVariable('probePresent'));
@@ -62,11 +63,11 @@ var response_display = {
 var expt4_procedure = {
     timeline: [
         cursor_off,
-        fixation,
+        fixation_expt4,
         cursor_on,
-        response_display
+        response_display_expt4
     ],
-    timeline_variables: trialCombos,
+    timeline_variables: trialCombos_expt4,
     sample: {
         type: 'fixed-repetitions',
         size: expt4_config.nTrialReps,
