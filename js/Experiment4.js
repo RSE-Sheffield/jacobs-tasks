@@ -1,6 +1,5 @@
-const imgSize = 96;
 var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
-
+var key;
 var taskN = 4;
 
 // Generate all the different conditions
@@ -71,8 +70,6 @@ var response_display_expt4 = {
             data.responseConfidence = 6 - data.response % 3
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
-        
-        targetsUsed[key].push(...stimArray)
     },
 };
 
