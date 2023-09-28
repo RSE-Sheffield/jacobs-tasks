@@ -37,3 +37,14 @@ function genTargetsUsed(trialCombos, filtVar) {
 
     return targetsUsed
 }
+
+function generateKey(nItems, timePerItem){
+    return String(nItems) + "_" + String(timePerItem)
+}
+
+function shuffleTargets(targets) {
+    for (let key in targets){
+        targets[key] = jspShuffle(targets[key])
+    }
+    return targets
+}
