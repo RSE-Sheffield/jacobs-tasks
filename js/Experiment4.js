@@ -28,10 +28,19 @@ var fixation_expt4 = generateFixation(
 var response_display_expt4 = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial) {
-        probe = generateProbe(jsPsych.timelineVariable('probePresent'));
+        key = generateKey(
+            jsPsych.timelineVariable('nItems'),
+            jsPsych.timelineVariable('timePerItem')
+        )
+
+        probe = generateLTMprobe(
+            jsPsych.timelineVariable('novelStim'),
+            targetsUsed,
+            key
+        );
     },
     stimulus: function(c) {
-        drawImages(c, [probe]);
+        drawStims(c, [probe])
     },
     canvas_size: [canvas.width, canvas.height],
     choices: expt4_config.responseOptions,
