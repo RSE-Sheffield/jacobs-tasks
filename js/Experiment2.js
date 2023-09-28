@@ -34,7 +34,7 @@ var target_array_expt2 = {
         if (!(key in targetsUsed)) targetsUsed[key] = [];
     },
     stimulus: function(c) {
-        drawImages(c, stimArray);
+        drawStims(c, stimArray);
     },
     canvas_size: [canvas.width, canvas.height],
     choices: [],
@@ -52,10 +52,10 @@ var target_array_expt2 = {
 var response_display_expt2 = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial) {
-        probe = generateProbe(jsPsych.timelineVariable('probePresent'));
+        probe = generateWMprobe(jsPsych.timelineVariable('probePresent'));
     },
     stimulus: function(c) {
-        drawImages(c, [probe]);
+        drawStims(c, [probe]);
     },
     canvas_size: [canvas.width, canvas.height],
     choices: expt2_config.responseOptions,
