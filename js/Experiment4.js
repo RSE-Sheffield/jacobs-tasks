@@ -14,6 +14,8 @@ let trialCombos_expt4 = jsPsych.randomization.factorial({
 if (typeof(targetsUsed) === 'undefined') {
     var targetsUsed = genTargetsUsed(trialCombos_expt4, "novelStim");
     var [allStims, targetsUsed] = setupStandalone(targetsUsed, expt4_config.nTrialReps);
+} else {
+    targetsUsed = shuffleTargets(targetsUsed);
 }
 
 
