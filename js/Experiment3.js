@@ -9,6 +9,11 @@ var fixation = {
     trial_duration: 1000,
 };
 
+let trialCombos_expt3 = jsPsych.randomization.factorial({
+    answer: ["fit", "nofit"],
+    difficulty: ["easy", "medium", "difficult"],
+});
+
 function drawRect(ctx, xPos, yPos, xSize, ySize, fillColour = "white", strokeColour = "black") {
     ctx.beginPath();
     ctx.fillStyle = fillColour;
@@ -17,28 +22,71 @@ function drawRect(ctx, xPos, yPos, xSize, ySize, fillColour = "white", strokeCol
     ctx.strokeRect(xPos, yPos, xSize, ySize);
 }
 
-function drawBar(ctx) {
-    drawRect(ctx, 240, 400, 120, 50)
+function drawBar(ctx, width) {
+    let half_width = -Math.floor(width/2)
+    drawRect(ctx, half_width, 400, width, 50)
 }
 
-function drawGap(ctx) {
-    drawRect(ctx, 200, 50, 50, 50, "blue")
-    drawRect(ctx, 350, 50, 50, 50, "blue")
+function drawGap(ctx, gap) {
+
+    let half_gap = Math.floor(gap/2);
+    let neg_gap = -(half_gap + 50)
+    let pos_gap = half_gap
+    drawRect(ctx, neg_gap, 50, 50, 50, "blue")
+    drawRect(ctx, pos_gap, 50, 50, 50, "blue")
 }
+
+function generateWidth(gap, difficulty, answer) {
+    let diff, width
+    switch (difficulty) {
+        case "easy":
+            diff = jsPsych.randomization.randomInt(35, 45);
+            break;
+        case "medium":
+            diff = jsPsych.randomization.randomInt(20, 30);
+            break;
+        case "difficult":
+            diff = jsPsych.randomization.randomInt(5, 15);
+            break;
+    }
+
+    console.log(difficulty, diff)
+    switch (answer) {
+        case "fit":
+            width = gap - diff;
+            break;
+        case "nofit":
+            width = gap + diff;
+            break;
+    }
+    console.log(answer, width)
+            
+    return width
+};
 
 var trial = {
     type: jsPsychCanvasButtonResponse,
+    on_start: function(trial) {
+        gap = jsPsych.randomization.randomInt(100, 300)
+        console.log("gap:", gap)
+        let difficulty = jsPsych.timelineVariable('difficulty')
+        let answer = jsPsych.timelineVariable('answer')
+        width = generateWidth(gap, difficulty, answer)
+    },
     stimulus: function(c) {
         const ctx = c.getContext("2d");
-        ctx.translate(0, 0);
-        drawBar(ctx);
-        drawGap(ctx);
+        ctx.translate(300, 0);
+        drawBar(ctx, width);
+        drawGap(ctx, gap);
     },
     prompt: "Will the bar fit through the gap?",
     choices: ["Yes", "No"],
     canvas_size: [canvas.width, canvas.height],
     on_finish: function(data) {
-        if (data.response == 0) {
+        let answer = jsPsych.timelineVariable('answer')
+        if (data.response == 0 && answer == "fit") {
+            data.correct = true;
+        } else if (data.response == 1 && answer == "nofit") {
             data.correct = true;
         } else {
             data.correct = false;
