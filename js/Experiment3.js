@@ -59,7 +59,7 @@ var trial = {
     },
     stimulus: function(c) {
         const ctx = c.getContext("2d");
-        ctx.translate(300, 0);
+        ctx.translate(canvas.width/2, 0);
         drawBar(ctx, width);
         drawGap(ctx, gap);
     },
