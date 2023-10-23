@@ -81,7 +81,7 @@ var trial = {
     },
     prompt: "Will the bar fit through the gap?",
     choices: ["Yes", "No"],
-    canvas_size: [canvas.width, canvas.height],
+    canvas_size: [canvas.height, canvas.width],
     on_finish: function(data) {
         let answer = jsPsych.timelineVariable('answer')
         if (data.response == 0 && answer == "fit") {
