@@ -50,7 +50,7 @@ function generateWidth(gap, difficulty, answer) {
 var trial = {
     type: jsPsychCanvasButtonResponse,
     on_start: function(trial) {
-        gap = jsPsych.randomization.randomInt(100, 300)
+        gap = jsPsych.randomization.randomInt(...expt3_config["gapRange"])
         console.log("gap:", gap)
         let difficulty = jsPsych.timelineVariable('difficulty')
         let answer = jsPsych.timelineVariable('answer')
@@ -97,8 +97,7 @@ var loop_node = {
         console.log('Repetition number ', repetition_count, ' has just started.');
     },
     loop_function: function(data) {
-        return keepLooping(startTime, limitSecs);
-    }
+        return keepLooping(startTime, expt3_config["timeLimit"]);
 };
 
 function keepLooping(startTime, limitSecs) {
