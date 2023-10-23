@@ -14,6 +14,7 @@ let trialCombos_expt2 = jsPsych.randomization.factorial({
     timePerItem: expt2_config.timePerItem,
     probePresent: expt2_config.probePresent,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
+    ...(expt2_config.feedback? {showFeedback: [false, true]}: {}),
 })
 
 // Generate fixation object
@@ -56,7 +57,36 @@ var meta_node = {
     conditional_function: function() {
         return expt2_config.metaCapacity
     }
-}
+};
+
+var feedback = {
+    type: jsPsychHtmlButtonResponse,
+    trial_duration: 1500,
+    stimulus: function(){
+        // The feedback stimulus is a dynamic parameter because we can't know in advance whether
+        // the stimulus should be 'correct' or 'incorrect'.
+        // Instead, this function will check the accuracy of the last response and use that information to set
+        // the stimulus value on each trial.
+        if (jsPsych.timelineVariable('showFeedback')) {
+            var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+            if(last_trial_correct){
+                return "<p>Correct!</p>"; // the parameter value has to be returned from the function
+            } else {
+                return "<p>Wrong.</p>"; // the parameter value has to be returned from the function
+            }
+        } else {
+            return "<p></p>"
+        }
+    },
+    choices: []
+};
+
+var feedback_node = {
+    timeline: [feedback],
+    conditional_function: function() {
+        return expt2_config.feedback
+    }
+};
 
 // Generate array of targets
 var target_array_expt2 = {
@@ -133,7 +163,8 @@ var expt2_procedure = {
         target_array_expt2,
         cursor_on,
         meta_node,
-        response_display_expt2
+        response_display_expt2,
+        feedback_node
     ],
     timeline_variables: trialCombos_expt2,
     sample: {
