@@ -15,5 +15,8 @@ var expt2_config = {
         "No - Guess", 
         "No - Think",
         "No - Sure",
-    ]
+    ],
+    metaCapacity: false,
+    metaOptions: ["number", "letter", "delay"],
+    metaLetters: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
 }

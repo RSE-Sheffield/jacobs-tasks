@@ -12,7 +12,8 @@ var taskN = 2;
 let trialCombos_expt2 = jsPsych.randomization.factorial({
     nItems: expt2_config.nItems,
     timePerItem: expt2_config.timePerItem,
-    probePresent: expt2_config.probePresent
+    probePresent: expt2_config.probePresent,
+    ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
 })
 
 // Generate fixation object
@@ -21,6 +22,41 @@ var fixation_expt2 = generateFixation(
     expt2_config.fixationPostTrial,
     taskN
 );
+
+var meta_capacity = {
+    type: jsPsychHtmlButtonResponse,
+    on_start: function(trial) {
+        let type = jsPsych.timelineVariable('metaOptions')
+        let nItems = jsPsych.timelineVariable('nItems') + 1
+        switch(type) {
+            case "number":
+                trial.prompt = "Select your capacity";
+                trial.choices = Array.from({length: nItems}, (value, index) => index);
+                break;
+            case "letter":
+                letters = jspShuffle(expt2_config.metaLetters.slice(0, nItems));
+                trial.prompt = "Find the letter A";
+                trial.choices = letters;
+                break;
+            case "delay":
+                trial.prompt = "Please wait"
+                trial.choices = []
+                break
+        }
+    },
+    stimulus: "<div>",
+    choices: [],
+    prompt: "",
+    trial_duration: 5000,
+    response_ends_trial: false,
+};
+
+var meta_node = {
+    timeline: [meta_capacity],
+    conditional_function: function() {
+        return expt2_config.metaCapacity
+    }
+}
 
 // Generate array of targets
 var target_array_expt2 = {
@@ -96,6 +132,7 @@ var expt2_procedure = {
         fixation_expt2,
         target_array_expt2,
         cursor_on,
+        meta_node,
         response_display_expt2
     ],
     timeline_variables: trialCombos_expt2,
