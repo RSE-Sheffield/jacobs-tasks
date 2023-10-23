@@ -98,6 +98,8 @@ var loop_node = {
     },
     loop_function: function(data) {
         return keepLooping(startTime, expt3_config["timeLimit"]);
+    },
+    timeline_variables: trialCombos_expt3
 };
 
 function keepLooping(startTime, limitSecs) {
