@@ -30,11 +30,12 @@ function drawBar(ctx, width) {
 function drawGap(ctx, gap) {
 
     let half_gap = Math.floor(gap/2);
-    let neg_gap = -(half_gap + 50)
+    let neg_gap = -(half_gap + blockSize)
     let pos_gap = half_gap
-    drawRect(ctx, neg_gap, 50, 50, 50, "blue")
-    drawRect(ctx, pos_gap, 50, 50, 50, "blue")
-}
+    drawRect(ctx, neg_gap, 50, blockSize, blockSize, "blue")
+    drawRect(ctx, pos_gap, 50, blockSize, blockSize, "blue")
+
+};
 
 function generateWidth(gap, difficulty, answer) {
     let diffRange = expt3_config["difficulties"][difficulty]
