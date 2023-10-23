@@ -1,6 +1,6 @@
 var startTime;
-var limitSecs = 30;
 var repetition_count = 0;
+var blockSize = 80;
 
 var fixation = {
     type: jsPsychHtmlKeyboardResponse,
@@ -11,7 +11,7 @@ var fixation = {
 
 let trialCombos_expt3 = jsPsych.randomization.factorial({
     answer: ["fit", "nofit"],
-    difficulty: ["easy", "medium", "difficult"],
+    difficulty: ["easy", "medium", "hard"],
 });
 
 function drawRect(ctx, xPos, yPos, xSize, ySize, fillColour = "white", strokeColour = "black") {
@@ -37,28 +37,11 @@ function drawGap(ctx, gap) {
 }
 
 function generateWidth(gap, difficulty, answer) {
-    let diff, width
-    switch (difficulty) {
-        case "easy":
-            diff = jsPsych.randomization.randomInt(35, 45);
-            break;
-        case "medium":
-            diff = jsPsych.randomization.randomInt(20, 30);
-            break;
-        case "difficult":
-            diff = jsPsych.randomization.randomInt(5, 15);
-            break;
-    }
+    let diffRange = expt3_config["difficulties"][difficulty]
+    let diff = jsPsych.randomization.randomInt(...diffRange);
 
     console.log(difficulty, diff)
-    switch (answer) {
-        case "fit":
-            width = gap - diff;
-            break;
-        case "nofit":
-            width = gap + diff;
-            break;
-    }
+    let width = gap + (expt3_config[answer] * diff);
     console.log(answer, width)
             
     return width
