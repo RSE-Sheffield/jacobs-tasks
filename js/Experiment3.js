@@ -1,127 +1,146 @@
-var startTime;
+// Experiment will show N stimuli randomly placed across a 4 x 3 grid
+// There will be a signal indicating the colour of the stimuli that participantts need to click
+
+// stimuli will appear randomly across the trial
+// The number of stimuli will change from trial to trial (staircase?)
+// Trials will be repeated for a fixed amount of times (will this need a way to break out immediately?)
+
+const all_cols = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a'];
+const all_pos = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+const n_rects = 5;
+const timeLimit = 60;
+const trialLength = 4000
+
+const startRange = [500, 1000];
+const durRange = [1500, 2000]; 
+
+const [stimWidth, stimHeight] = [60, 60];
+const [squareWidth, squareHeight] = [150, 150];
+const jitterRange = [-25, 25];
+
+var loopStart, corrIdx;
 var repetition_count = 0;
-var blockSize = 80;
 
-var fixation = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div style="font-size:60px;">+</div>',
-    choices: "NO_KEYS",
-    trial_duration: 1000,
-};
-
-let trialCombos_expt3 = jsPsych.randomization.factorial({
-    answer: ["fit", "nofit"],
-    difficulty: ["easy", "medium", "hard"],
-});
-
-function drawRect(ctx, xPos, yPos, xSize, ySize, fillColour = "white", strokeColour = "black") {
-    ctx.beginPath();
-    ctx.fillStyle = fillColour;
-    ctx.fillRect(xPos, yPos, xSize, ySize);
-    ctx.strokeStyle = strokeColour
-    ctx.strokeRect(xPos, yPos, xSize, ySize);
+let proto_rect_obj = {
+    obj_type: 'rect', // means a rectangle
+    startX: 0, // location in the canvas
+    startY: 575,
+    width: stimWidth, // of the rectangle
+    height: stimHeight,
+    line_color: '#ffffff',
+    fill_color: 'black',
+    show_start_time: 500, // from the trial start (ms)
+    show_end_time: 1500
 }
 
-function drawBar(ctx, width) {
-    let half_width = -Math.floor(width/2)
-    drawRect(ctx, half_width, 400, width, 50)
+function getXYfromPos(pos, stride = 4) {
+    let xVal = pos % stride;
+    let yVal = Math.floor(pos / stride)
+
+    return [xVal, yVal]
 }
 
-function drawGap(ctx, gap) {
-
-    let half_gap = Math.floor(gap/2);
-    let neg_gap = -(half_gap + blockSize)
-    let pos_gap = half_gap
-    drawRect(ctx, neg_gap, 50, blockSize, blockSize, "blue")
-    drawRect(ctx, pos_gap, 50, blockSize, blockSize, "blue")
-
-};
-
-function generateWidth(gap, difficulty, answer) {
-    let diffRange = expt3_config["difficulties"][difficulty]
-    let diff = jsPsych.randomization.randomInt(...diffRange);
-
-    console.log(difficulty, diff)
-    let width = gap + (expt3_config[answer] * diff);
-    console.log(answer, width)
-            
-    return width
-};
-
-var trial = {
-    type: jsPsychCanvasButtonResponse,
+const trial = {
+    type: jsPsychPsychophysics,
+    stimuli: Array(n_rects + 1).fill(proto_rect_obj),
+    response: "button",
+    choices: [], 
     on_start: function(trial) {
-        gap = jsPsych.randomization.randomInt(...expt3_config["gapRange"])
-        console.log("gap:", gap)
-        let difficulty = jsPsych.timelineVariable('difficulty')
-        let answer = jsPsych.timelineVariable('answer')
-        width = generateWidth(gap, difficulty, answer)
-    },
-    stimulus: function(c) {
-        const ctx = c.getContext("2d");
-        ctx.translate(canvas.width/2, 0);
-        drawBar(ctx, width);
-        drawGap(ctx, gap);
-    },
-    prompt: "Will the bar fit through the gap?",
-    choices: ["Yes", "No"],
-    canvas_size: [canvas.height, canvas.width],
-    on_finish: function(data) {
-        let answer = jsPsych.timelineVariable('answer')
-        if (data.response == 0 && answer == "fit") {
-            data.correct = true;
-        } else if (data.response == 1 && answer == "nofit") {
-            data.correct = true;
-        } else {
-            data.correct = false;
-        }
-    }
-};
+        let rect_cols = jsPsych.randomization.sampleWithoutReplacement(all_cols, n_rects)
+        let rect_pos = jsPsych.randomization.sampleWithoutReplacement(all_pos, n_rects)
 
-var feedback = {
-    type: jsPsychHtmlKeyboardResponse,
-    trial_duration: 3000,
-    stimulus: function(){
-        var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-        if(last_trial_correct){
-          return "<p>Correct!</p>"; // the parameter value has to be returned from the function
-        } else {
-          return "<p>Wrong.</p>"; // the parameter value has to be returned from the function
+
+        let corrPos = jsPsych.randomization.sampleWithoutReplacement(rect_pos, 1)
+        corrIdx = rect_pos.indexOf(...corrPos)
+
+        trial.stimuli[0].width = 1600;
+        trial.stimuli[0].height = 25;
+        trial.stimuli[0].fill_color = rect_cols[corrIdx]
+        trial.stimuli[0].show_start_time = 0;
+        trial.stimuli[0].show_end_time = trialLength;
+
+        for (let i = 1; i < trial.stimuli.length; i++) {
+
+            let [xLoc, yLoc] = getXYfromPos(rect_pos[i-1])
+
+            jitterX = jsPsych.randomization.randomInt(...jitterRange)
+            jitterY = jsPsych.randomization.randomInt(...jitterRange)
+    
+            let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
+            let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
+            let startTime = jsPsych.randomization.randomInt(...startRange)
+            let endTime = startTime + jsPsych.randomization.randomInt(...durRange)
+            
+            trial.stimuli[i].startX = xPos // location in the canvas
+            trial.stimuli[i].startY = yPos
+            trial.stimuli[i].fill_color = rect_cols[i-1]
+            trial.stimuli[i].show_start_time = startTime
+            trial.stimuli[i].show_end_time = endTime
+
+        }
+    },
+    canvas_width: canvas.width,
+    canvas_height: canvas.height,
+    background_color: 'white', // The HEX color means green.
+    trial_duration: trialLength,
+    mouse_down_func: function(e) {
+        let x = e.offsetX;
+        let y = e.offsetY;
+
+        corrCol = jsPsych.getCurrentTrial().stim_array[0].fill_color;
+        console.log(corrCol)
+
+        for (let i = 1; i < trial.stimuli.length; i++) {
+            let x1 = jsPsych.getCurrentTrial().stim_array[i].startX - (stimWidth/2)
+            let x2 = x1 + stimWidth
+
+            let y1 = jsPsych.getCurrentTrial().stim_array[i].startY - (stimHeight/2)
+            let y2 = y1 + stimHeight
+
+            let inX = x1 < x & x < x2
+            let inY = y1 < y & y < y2
+
+            if (inX & inY) {
+                stimCol = jsPsych.getCurrentTrial().stim_array[i].fill_color;
+                console.log(stimCol)
+                if (stimCol === corrCol) {
+                    jsPsych.finishTrial()
+                } else {
+                    jsPsych.getCurrentTrial().stim_array[i].show_end_time = 0
+                }
+            }
+
         }
     }
+
 }
 
-var loop_node = {
-    timeline: [fixation, trial, feedback],
+const loop_node = {
+    timeline: [trial],
+
     on_timeline_start: function() {
         repetition_count++;
         console.log('Repetition number ', repetition_count, ' has just started.');
     },
-    loop_function: function(data) {
-        return keepLooping(startTime, expt3_config["timeLimit"]);
+    loop_function: function() {
+        return keepLooping(loopStart, timeLimit);
     },
-    timeline_variables: trialCombos_expt3
 };
 
-function keepLooping(startTime, limitSecs) {
-    currTime = new Date();
-    elapsedMs = currTime - startTime;
+function keepLooping(loopStart, limitSecs) {
+    let currTime = new Date();
+    let elapsedMs = currTime - loopStart;
     return (elapsedMs / 1000) < limitSecs
 }
-
-var end_screen = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: "You're out of the loop.",
-    trial_duration: 3000,
-};
 
 var start_timeline = {
     type: jsPsychCallFunction,
     func: function() {
-        startTime = new Date();
-        console.log(startTime)
+        loopStart = new Date();
+        console.log(loopStart)
     },
 };
-mainTimeline.push(start_timeline);
-mainTimeline.push(loop_node);
-mainTimeline.push(end_screen);
+
+
+jsPsych.run([start_timeline, loop_node])
