@@ -86,9 +86,6 @@ const trial = {
         let x = e.offsetX;
         let y = e.offsetY;
 
-        corrCol = jsPsych.getCurrentTrial().stim_array[0].fill_color;
-        console.log(corrCol)
-
         for (let i = 1; i < trial.stimuli.length; i++) {
             let x1 = jsPsych.getCurrentTrial().stim_array[i].startX - (stimWidth/2)
             let x2 = x1 + stimWidth
@@ -100,18 +97,28 @@ const trial = {
             let inY = y1 < y & y < y2
 
             if (inX & inY) {
-                stimCol = jsPsych.getCurrentTrial().stim_array[i].fill_color;
-                console.log(stimCol)
-                if (stimCol === corrCol) {
-                    jsPsych.finishTrial()
-                } else {
-                    jsPsych.getCurrentTrial().stim_array[i].show_end_time = 0
-                }
+                clickedColour = jsPsych.getCurrentTrial().stim_array[i].fill_color;
+                jsPsych.getCurrentTrial().end_trial()
             }
 
         }
-    }
-
+    },
+    on_finish: function(data) {
+        // Record target and clicked colours
+        data.target = targetColour
+        data.response = clickedColour
+        if (clickedColour === "") {
+            // No Response
+            data.correct = -1
+        } else if (clickedColour === targetColour) {
+            // Correct response
+            data.correct = 1
+        } else {
+            // Incorrect response
+            data.correct = 0
+        }
+        clickedColour = ""
+    },
 }
 
 const loop_node = {
