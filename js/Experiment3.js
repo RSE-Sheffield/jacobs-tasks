@@ -123,12 +123,9 @@ const trial = {
 }
 
 const loop_node = {
-    timeline: [trial],
 
-    on_timeline_start: function() {
-        repetition_count++;
-        console.log('Repetition number ', repetition_count, ' has just started.');
-    },
+    // Repeat the trial until the keepLooping function returns False
+    timeline: [trial],
     loop_function: function() {
         return keepLooping(loopStart, expt3_config.blockTimeLimitMs);
     },
