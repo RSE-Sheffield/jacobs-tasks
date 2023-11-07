@@ -21,9 +21,9 @@ let proto_rect_obj = {
     startY: 575,
     width: stimWidth, // of the rectangle
     height: stimHeight,
-    line_color: '#ffffff',
+    line_color: 'black',
     fill_color: 'black',
-    show_start_time: 500, // from the trial start (ms)
+    show_start_time: 0, // from the trial start (ms)
     show_end_time: expt3_config.maxTrialLengthMs,
 }
 
@@ -38,7 +38,7 @@ const trial = {
     type: jsPsychPsychophysics,
     stimuli: Array(nStim + 1).fill(proto_rect_obj),
     response: "button",
-    choices: [], 
+    choices: [],
     on_start: function(trial) {
         // Sample non-target colours
         let rect_cols = jsPsych.randomization.sampleWithoutReplacement(shufCols, nStim - 1)
@@ -58,11 +58,11 @@ const trial = {
 
             // Generate x and y locations from numerical position
             let [xLoc, yLoc] = getXYfromPos(rect_pos[i-1])
-
+            
             // Generate some jitter for x and y
             let jitterX = jsPsych.randomization.randomInt(...jitterRange)
             let jitterY = jsPsych.randomization.randomInt(...jitterRange)
-    
+            
             // Generate x and y coords from locations and jitter
             let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
             let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
@@ -81,7 +81,7 @@ const trial = {
     },
     canvas_width: canvas.width,
     canvas_height: canvas.height,
-    background_color: 'white', // The HEX color means green.
+    background_color: 'white',
     trial_duration: expt3_config.maxTrialLengthMs,
     mouse_down_func: function(e) {
         let x = e.offsetX;
