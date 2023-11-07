@@ -39,37 +39,43 @@ const trial = {
     response: "button",
     choices: [], 
     on_start: function(trial) {
-        let rect_cols = jsPsych.randomization.sampleWithoutReplacement(all_cols, n_rects)
-        let rect_pos = jsPsych.randomization.sampleWithoutReplacement(all_pos, n_rects)
+        // Sample non-target colours
+        let rect_cols = jsPsych.randomization.sampleWithoutReplacement(shufCols, nStim - 1)
+        // Add target colour back to the array
+        rect_cols.push(targetColour)
 
+        // Sample different positions
+        let rect_pos = jsPsych.randomization.sampleWithoutReplacement(expt3_config.allPostions, nStim)
 
-        let corrPos = jsPsych.randomization.sampleWithoutReplacement(rect_pos, 1)
-        corrIdx = rect_pos.indexOf(...corrPos)
-
-        trial.stimuli[0].width = 1600;
+        // This draws the target bar across the bottom of the canvas
+        trial.stimuli[0].width = 1600; // Not sure why this is double the width of the canvas
         trial.stimuli[0].height = 25;
-        trial.stimuli[0].fill_color = rect_cols[corrIdx]
-        trial.stimuli[0].show_start_time = 0;
-        trial.stimuli[0].show_end_time = trialLength;
+        trial.stimuli[0].fill_color = targetColour
 
+        // This draws the individual stimuli on the canvas
         for (let i = 1; i < trial.stimuli.length; i++) {
 
+            // Generate x and y locations from numerical position
             let [xLoc, yLoc] = getXYfromPos(rect_pos[i-1])
 
-            jitterX = jsPsych.randomization.randomInt(...jitterRange)
-            jitterY = jsPsych.randomization.randomInt(...jitterRange)
+            // Generate some jitter for x and y
+            let jitterX = jsPsych.randomization.randomInt(...jitterRange)
+            let jitterY = jsPsych.randomization.randomInt(...jitterRange)
     
+            // Generate x and y coords from locations and jitter
             let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
             let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
+            
+            // Generate random start and end times
             let startTime = jsPsych.randomization.randomInt(...expt3_config.startTimeRangeMs)
             let endTime = startTime + jsPsych.randomization.randomInt(...expt3_config.durationRangeMs)
             
+            // Update the stimulus
             trial.stimuli[i].startX = xPos // location in the canvas
             trial.stimuli[i].startY = yPos
             trial.stimuli[i].fill_color = rect_cols[i-1]
             trial.stimuli[i].show_start_time = startTime
             trial.stimuli[i].show_end_time = endTime
-
         }
     },
     canvas_width: canvas.width,
