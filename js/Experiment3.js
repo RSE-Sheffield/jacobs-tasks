@@ -153,5 +153,9 @@ var start_timeline = {
     },
 };
 
+const top_node = {
+    timeline: [start_timeline, loop_node],
+    repetitions: 5
+}
 
-jsPsych.run([start_timeline, loop_node])
+jsPsych.run([top_node])
