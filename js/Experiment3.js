@@ -5,19 +5,11 @@
 // The number of stimuli will change from trial to trial (staircase?)
 // Trials will be repeated for a fixed amount of times (will this need a way to break out immediately?)
 
-const all_cols = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a'];
-const all_pos = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+let nStim = expt3_config.startingStimN;
 
-const n_rects = 5;
-const timeLimit = 60;
-const trialLength = 4000
-
-const startRange = [500, 1000];
-const durRange = [1500, 2000]; 
-
-const [stimWidth, stimHeight] = [60, 60];
-const [squareWidth, squareHeight] = [150, 150];
-const jitterRange = [-25, 25];
+const [stimWidth, stimHeight] = expt3_config.stimulusDims;
+const [squareWidth, squareHeight] = expt3_config.squareDims;
+const jitterRange = expt3_config.posJitterRange;
 
 var loopStart, corrIdx;
 var repetition_count = 0;
@@ -31,7 +23,7 @@ let proto_rect_obj = {
     line_color: '#ffffff',
     fill_color: 'black',
     show_start_time: 500, // from the trial start (ms)
-    show_end_time: 1500
+    show_end_time: expt3_config.maxTrialLengthMs,
 }
 
 function getXYfromPos(pos, stride = 4) {
@@ -43,7 +35,7 @@ function getXYfromPos(pos, stride = 4) {
 
 const trial = {
     type: jsPsychPsychophysics,
-    stimuli: Array(n_rects + 1).fill(proto_rect_obj),
+    stimuli: Array(nStim + 1).fill(proto_rect_obj),
     response: "button",
     choices: [], 
     on_start: function(trial) {
@@ -69,8 +61,8 @@ const trial = {
     
             let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
             let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
-            let startTime = jsPsych.randomization.randomInt(...startRange)
-            let endTime = startTime + jsPsych.randomization.randomInt(...durRange)
+            let startTime = jsPsych.randomization.randomInt(...expt3_config.startTimeRangeMs)
+            let endTime = startTime + jsPsych.randomization.randomInt(...expt3_config.durationRangeMs)
             
             trial.stimuli[i].startX = xPos // location in the canvas
             trial.stimuli[i].startY = yPos
@@ -83,7 +75,7 @@ const trial = {
     canvas_width: canvas.width,
     canvas_height: canvas.height,
     background_color: 'white', // The HEX color means green.
-    trial_duration: trialLength,
+    trial_duration: expt3_config.maxTrialLengthMs,
     mouse_down_func: function(e) {
         let x = e.offsetX;
         let y = e.offsetY;
@@ -124,7 +116,7 @@ const loop_node = {
         console.log('Repetition number ', repetition_count, ' has just started.');
     },
     loop_function: function() {
-        return keepLooping(loopStart, timeLimit);
+        return keepLooping(loopStart, expt3_config.blockTimeLimitMs);
     },
 };
 
