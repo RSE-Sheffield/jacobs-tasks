@@ -134,10 +134,11 @@ const loop_node = {
     },
 };
 
-function keepLooping(loopStart, limitSecs) {
+function keepLooping(loopStart, limitMs) {
+    // Checks to see if the time since 'loopStart' is less that the 'limitSecs'
     let currTime = new Date();
     let elapsedMs = currTime - loopStart;
-    return (elapsedMs / 1000) < limitSecs
+    return elapsedMs < limitMs
 }
 
 var start_timeline = {
