@@ -41,12 +41,12 @@ const trial = {
     choices: [],
     on_start: function(trial) {
         // Sample non-target colours
-        let rect_cols = jsPsych.randomization.sampleWithoutReplacement(shufCols, nStim - 1)
+        let rect_cols = jspRand.sampleWithoutReplacement(shufCols, nStim - 1)
         // Add target colour back to the array
         rect_cols.push(targetColour)
 
         // Sample different positions
-        let rect_pos = jsPsych.randomization.sampleWithoutReplacement(expt3_config.allPostions, nStim)
+        let rect_pos = jspRand.sampleWithoutReplacement(expt3_config.allPostions, nStim)
 
         // This draws the target bar across the bottom of the canvas
         trial.stimuli[0].width = 1600; // Not sure why this is double the width of the canvas
@@ -60,16 +60,16 @@ const trial = {
             let [xLoc, yLoc] = getXYfromPos(rect_pos[i-1])
             
             // Generate some jitter for x and y
-            let jitterX = jsPsych.randomization.randomInt(...jitterRange)
-            let jitterY = jsPsych.randomization.randomInt(...jitterRange)
+            let jitterX = jspRand.randomInt(...jitterRange)
+            let jitterY = jspRand.randomInt(...jitterRange)
             
             // Generate x and y coords from locations and jitter
             let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
             let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
             
             // Generate random start and end times
-            let startTime = jsPsych.randomization.randomInt(...expt3_config.startTimeRangeMs)
-            let endTime = startTime + jsPsych.randomization.randomInt(...expt3_config.durationRangeMs)
+            let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs)
+            let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs)
             
             // Update the stimulus
             trial.stimuli[i].startX = xPos // location in the canvas
@@ -145,7 +145,7 @@ var start_timeline = {
         loopStart = new Date();
 
         // Set target colour for this block
-        shufCols = jspShuffle(expt3_config.allColours)
+        shufCols = jspRand.shuffle(expt3_config.allColours)
         targetColour = shufCols.shift()
     },
 };
