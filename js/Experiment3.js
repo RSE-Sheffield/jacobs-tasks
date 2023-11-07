@@ -155,4 +155,4 @@ const top_node = {
     repetitions: 5
 }
 
-jsPsych.run([top_node])
+mainTimeline.push(top_node)
