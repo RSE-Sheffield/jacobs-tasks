@@ -11,8 +11,9 @@ const [stimWidth, stimHeight] = expt3_config.stimulusDims;
 const [squareWidth, squareHeight] = expt3_config.squareDims;
 const jitterRange = expt3_config.posJitterRange;
 
-var loopStart, corrIdx;
-var repetition_count = 0;
+// Initialise these at the top level so they can be accessed by functions
+var targetColour, loopStart;
+var clickedColour = ""
 
 let proto_rect_obj = {
     obj_type: 'rect', // means a rectangle
@@ -142,8 +143,12 @@ function keepLooping(loopStart, limitSecs) {
 var start_timeline = {
     type: jsPsychCallFunction,
     func: function() {
+        // Set start time for looping block
         loopStart = new Date();
-        console.log(loopStart)
+
+        // Set target colour for this block
+        shufCols = jspShuffle(expt3_config.allColours)
+        targetColour = shufCols.shift()
     },
 };
 
