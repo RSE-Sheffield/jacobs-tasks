@@ -1,8 +1,7 @@
 var [correctCount, incorrectCount] = [0, 0];
 
 const e1Pos = Array.from({length: expt1_config.nPositions}, (_value, index) => index)
-const taskN = 1;
-const [stimWidth, stimHeight] = expt1_config.stimDims;
+var taskN = 1;
 
 // Generate fixation object
 var fixation = generateFixation(
@@ -15,8 +14,8 @@ const proto_rect_obj = {
     obj_type: 'rect', // means a rectangle
     startX: 0, // location in the canvas
     startY: 0,
-    width: stimWidth, // of the rectangle
-    height: stimHeight,
+    width: expt1_config.stimDims[0], // of the rectangle
+    height: expt1_config.stimDims[1],
     line_color: 'black',
     fill_color: 'black',
     show_start_time: 0, // from the trial start (ms)
@@ -39,8 +38,6 @@ var expt1_array = {
         // Before each trial randomly select some positions
         let rectPos = jspRand.sampleWithoutReplacement(e1Pos, nStimuli)
 
-        console.log(rectPos)
-
         // Then shuffle the available colours and and split into used and unused
         let shuffColours = jspRand.shuffle(expt1_config.colours)
         usedCols = shuffColours.slice(0, nStimuli)
@@ -62,7 +59,6 @@ var expt1_array = {
             // Set fill colour for each stim
             trial.stimuli[i].fill_color = usedCols[i]
         }
-        console.log(trial.stimuli)
     },
     canvas_width: canvas.width,
     canvas_height: canvas.height,
@@ -74,20 +70,9 @@ var expt1_array = {
     },
 }
 
-let probe_rect_obj = {
-    obj_type: 'rect', // means a rectangle
-    startX: 0, // location in the canvas
-    startY: 0,
-    width: stimWidth, // of the rectangle
-    height: stimHeight,
-    line_color: 'black',
-    fill_color: 'black',
-    origin_center: true,
-}
-
 var expt1_probe = {
     type: jsPsychPsychophysics,
-    stimuli: [probe_rect_obj],
+    stimuli: [proto_rect_obj],
     response_type: "button",
     button_choices: ["yes", "no"],
     button_html: [
