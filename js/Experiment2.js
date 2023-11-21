@@ -106,17 +106,6 @@ var feedback_node = {
     }
 };
 
-// prototype stimulus object
-const proto_img_obj = {
-    obj_type: 'image',
-    file: allStims[0],
-    startX: 0,
-    startY: 0,
-    width: imgSize[0],
-    height: imgSize[1],
-    origin_center: true,
-}
-
 // Generate array of targets
 const expt2_array = {
     type: jsPsychPsychophysics,
@@ -141,7 +130,7 @@ const expt2_array = {
         for (let i = 0; i < nStimuli; i++) {
             // This deep-copies the object each time else you end up with
             // the same properties for all objects
-            stim = {...proto_img_obj}
+            stim = genProtoImg();
             
             // Generate and set x and y positions for each stim
             var [xPos, yPos] = generatePosCircle(
@@ -199,13 +188,16 @@ const expt2_response = {
         probePresent: jsPsych.timelineVariable('probePresent')
     },
     stimuli: function() {
-        let probe = {...proto_img_obj};
+        let probe = genProtoImg();
         const probePresent = jsPsych.timelineVariable('probePresent');
+
+        console.log(probePresent)
         if (probePresent) {
             probe.file = usedStims.pop();
         } else {
             probe.file = allStims.pop();
         }
+
         return [probe]
     },
     on_start: function(trial) {

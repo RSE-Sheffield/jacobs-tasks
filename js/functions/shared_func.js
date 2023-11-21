@@ -48,3 +48,16 @@ function shuffleTargets(targets) {
     }
     return targets
 }
+
+function genProtoImg() {
+    // prototype stimulus object
+    return proto_img_obj = {
+        obj_type: 'image',
+        file: allStims[0],
+        startX: 0,
+        startY: 0,
+        width: imgSize[0],
+        height: imgSize[1],
+        origin_center: true,
+    }
+}
