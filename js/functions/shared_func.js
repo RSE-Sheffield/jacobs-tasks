@@ -29,10 +29,10 @@ var cursor_on = {
     }
 }
 
-function genTargetsUsed(trialCombos, filtVar) {
+function genTargetsUsedDict(trialCombos, filtVar) {
     let targetsUsed = {}
     let filt_combos = trialCombos.filter(item => item[filtVar] == true);
-    let keyArr = filt_combos.map(el => `${el.nItems}_${el.timePerItem}`);
+    let keyArr = filt_combos.map(el => `${el.nStimuli}_${el.timePerItem}`);
     keyArr.forEach(el => {targetsUsed[el] = []});
 
     return targetsUsed
@@ -44,7 +44,7 @@ function generateKey(nItems, timePerItem){
 
 function shuffleTargets(targets) {
     for (let key in targets){
-        targets[key] = jspShuffle(targets[key])
+        targets[key] = jspRand.shuffle(targets[key])
     }
     return targets
 }
