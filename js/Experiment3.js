@@ -138,7 +138,7 @@ const start_timeline = {
 
 const top_node = {
     timeline: [start_timeline, loop_node],
-    repetitions: 5
+    repetitions: expt3_config.loopRepetitions,
 };
 
 mainTimeline.push(top_node);

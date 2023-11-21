@@ -9,4 +9,5 @@ var expt3_config = {
     stimulusDims: [60, 60],
     squareDims: [150, 150],
     posJitterRange: [-25, 25],
+    loopRepetitions: 5.
 }
