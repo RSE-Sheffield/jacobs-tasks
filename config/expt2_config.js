@@ -19,5 +19,6 @@ var expt2_config = {
     metaCapacity: false,
     metaOptions: ["number", "letter", "delay"],
     metaLetters: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
-    feedback: true
+    metaDuration: 5000,
+    feedback: false,
 }

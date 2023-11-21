@@ -32,18 +32,19 @@ var fixation_expt2 = generateFixation(
     taskN
 );
 
+// Object for meta-capacity prompt
 var meta_capacity = {
     type: jsPsychHtmlButtonResponse,
     on_start: function(trial) {
         let type = jsPsych.timelineVariable('metaOptions')
-        let nItems = jsPsych.timelineVariable('nItems') + 1
+        let nStimuli = jsPsych.timelineVariable('nStimuli') + 1
         switch(type) {
             case "number":
                 trial.prompt = "Select your capacity";
-                trial.choices = Array.from({length: nItems}, (value, index) => index);
+                trial.choices = Array.from({length: nStimuli}, (_value, index) => index);
                 break;
             case "letter":
-                letters = jspShuffle(expt2_config.metaLetters.slice(0, nItems));
+                letters = jspRand.shuffle(expt2_config.metaLetters.slice(0, nStimuli));
                 trial.prompt = "Find the letter A";
                 trial.choices = letters;
                 break;
@@ -56,8 +57,12 @@ var meta_capacity = {
     stimulus: "<div>",
     choices: [],
     prompt: "",
-    trial_duration: 5000,
+    trial_duration: expt2_config.metaDuration,
     response_ends_trial: false,
+    button_html: '<button class="jspsych-btn colour-btn">%choice%</button>',
+    data: {
+        screen: "meta"
+    }
 };
 
 var meta_node = {
