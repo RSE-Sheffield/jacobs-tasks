@@ -2,6 +2,7 @@
 <html>
   <head>
     <script src="js/jspsych/jspsych.js"></script>
+    <script src="js/jspsych-psychophysics-3.6.0/jspsych-psychophysics.js"></script>
     <script src="js/jspsych/plugin-html-keyboard-response.js"></script>
     <script src="js/jspsych/plugin-canvas-button-response.js"></script>
     <script src="js/jspsych/plugin-call-function.js"></script>
@@ -27,9 +28,9 @@
       });
       
       const canvas = document.getElementById("canvas");
-      const imgSize = 96;
+      const imgSize = [96, 96];
       const mainTimeline = [];
-      var jspShuffle = jsPsych.randomization.shuffle
+      var jspRand = jsPsych.randomization
     </script>
     <script src="js/Experiment4.js"></script>
     <script>
