@@ -99,12 +99,12 @@ function generateTargets(allStims, targetsUsed, itemsPerCond){
     // put them in the targetsUsed object under that condition
 
     for (let key in targetsUsed) {
-        stims = allStims.slice(0, itemsPerCond).map(item => new stimStruct(item));
+        stims = allStims.slice(0, itemsPerCond);
         allStims = allStims.slice(itemsPerCond);
         targetsUsed[key].push(...stims);
     }
 
-    return targetsUsed
+    return [allStims, targetsUsed]
 };
 
 function genImgList(nImages, filePath = "./img/Picture", fileExt = ".png", shuffle = true) {
