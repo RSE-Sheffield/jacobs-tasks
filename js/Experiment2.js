@@ -65,6 +65,8 @@ var meta_capacity = {
     }
 };
 
+// Node contianing just meta-capacity, with conditional function that
+// determines whether it is used from flag in config.
 var meta_node = {
     timeline: [meta_capacity],
     conditional_function: function() {
