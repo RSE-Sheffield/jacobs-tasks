@@ -8,8 +8,6 @@
 let nStim = expt3_config.startingStimN;
 
 const [stimWidth, stimHeight] = expt3_config.stimulusDims;
-const [squareWidth, squareHeight] = expt3_config.squareDims;
-const jitterRange = expt3_config.posJitterRange;
 
 // Initialise these at the top level so they can be accessed by functions
 var targetColour, loopStart;
@@ -55,17 +53,11 @@ const trial = {
 
         // This draws the individual stimuli on the canvas
         for (let i = 1; i < trial.stimuli.length; i++) {
-
-            // Generate x and y locations from numerical position
-            let [xLoc, yLoc] = getXYfromPos(rect_pos[i-1])
-            
-            // Generate some jitter for x and y
-            let jitterX = jspRand.randomInt(...jitterRange)
-            let jitterY = jspRand.randomInt(...jitterRange)
-            
-            // Generate x and y coords from locations and jitter
-            let xPos = (stimWidth/2) + (squareWidth/2) + (squareWidth * xLoc) + jitterX
-            let yPos = (stimHeight/2) + (squareHeight/2) + (squareHeight * yLoc) + jitterY
+            var [xPos, yPos] = generatePosGrid(
+                rectPos[i-1],
+                expt3_config.squareDims,
+                expt3_config.posJitterRange
+            )
             
             // Generate random start and end times
             let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs)
