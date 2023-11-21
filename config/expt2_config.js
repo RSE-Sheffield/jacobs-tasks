@@ -21,4 +21,6 @@ var expt2_config = {
     metaLetters: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
     metaDuration: 5000,
     feedback: false,
+    showFeedbackOptions: [false, true],
+    feedbackDuration: 1500,
 }

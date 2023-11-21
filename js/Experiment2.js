@@ -74,9 +74,10 @@ var meta_node = {
     }
 };
 
+// Object for feedback
 var feedback = {
     type: jsPsychHtmlButtonResponse,
-    trial_duration: 1500,
+    trial_duration: expt2_config.feedbackDuration,
     stimulus: function(){
         // The feedback stimulus is a dynamic parameter because we can't know in advance whether
         // the stimulus should be 'correct' or 'incorrect'.
@@ -93,7 +94,10 @@ var feedback = {
             return "<p></p>"
         }
     },
-    choices: []
+    choices: [],
+    data: {
+        screen: "feedback"
+    }
 };
 
 var feedback_node = {
