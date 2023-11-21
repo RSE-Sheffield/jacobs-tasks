@@ -4,7 +4,7 @@ var expt2_config = {
     fixationDuration: 500,
     fixationPostTrial: 500,
     arrayPostTrial: 0,
-    nItems: [2, 6],
+    nStimuli: [2, 6],
     timePerItem: [250, 500],
     probePresent: [true, false],
     nTrialReps: 1,

@@ -17,12 +17,12 @@ const preload = {
 mainTimeline.push(preload);
 
 // Generate all the different conditions
-let trialCombos_expt2 = jsPsych.randomization.factorial({
-    nItems: expt2_config.nItems,
+let expt2_trialCombos = jspRand.factorial({
+    nStimuli: expt2_config.nStimuli,
     timePerItem: expt2_config.timePerItem,
     probePresent: expt2_config.probePresent,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
-    ...(expt2_config.feedback? {showFeedback: [false, true]}: {}),
+    ...(expt2_config.feedback? {showFeedback: expt2_config.showFeedbackOptions}: {}),
 })
 
 // Generate fixation object
