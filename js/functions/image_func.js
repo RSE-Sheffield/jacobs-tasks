@@ -106,3 +106,13 @@ function generateTargets(allStims, targetsUsed, itemsPerCond){
 
     return targetsUsed
 };
+
+function genImgList(nImages, filePath = "./img/Picture", fileExt = ".png", shuffle = true) {
+    // Generate list of images
+    let allNums = Array.from({length: nImages}, (_value, index) => (index + 1))
+    let allImgs = allNums.map((el) => filePath + el + fileExt)
+
+    if (shuffle) allImgs = jspRand.shuffle(allImgs)
+
+    return allImgs
+}

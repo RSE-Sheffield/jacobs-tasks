@@ -1,5 +1,5 @@
 var expt2_config = {
-    N_images: 454,              // Total number of images available
+    nImages: 454,              // Total number of images available
     radius: 250,
     fixationDuration: 500,
     fixationPostTrial: 500,

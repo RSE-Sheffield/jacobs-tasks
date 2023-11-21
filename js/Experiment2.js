@@ -1,5 +1,5 @@
 var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
-const positionArr = [1, 2, 3, 4, 5, 6, 7, 8];
+var allStims = genImgList(expt2_config.nImages)
 
 var stimArray;
 var allStims = Array.from({length: 454}, (value, index) => index + 1)
@@ -7,6 +7,14 @@ allStims = jspShuffle(allStims)
 var targetsUsed = {};
 var key;
 var taskN = 2;
+
+// Preload stimuli
+const preload = {
+    type: jsPsychPreload,
+    images: allStims,
+}
+
+mainTimeline.push(preload);
 
 // Generate all the different conditions
 let trialCombos_expt2 = jsPsych.randomization.factorial({
