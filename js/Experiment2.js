@@ -100,6 +100,7 @@ var feedback = {
     }
 };
 
+// Conditional node for the feedback
 var feedback_node = {
     timeline: [feedback],
     conditional_function: function() {
