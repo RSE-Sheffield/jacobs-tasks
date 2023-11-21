@@ -26,25 +26,10 @@ var fixation_expt4 = generateFixation(
 );
 
 // Generate the response display
-var response_display_expt4 = {
-    type: jsPsychCanvasButtonResponse,
-    on_start: function(trial) {
-        key = generateKey(
-            jsPsych.timelineVariable('nItems'),
-            jsPsych.timelineVariable('timePerItem')
-        )
-
-        probe = generateLTMprobe(
-            jsPsych.timelineVariable('novelStim'),
-            targetsUsed,
-            key
-        );
-    },
-    stimulus: function(c) {
-        drawStims(c, [probe])
-    },
-    canvas_size: [canvas.width, canvas.height],
-    choices: expt4_config.responseOptions,
+const expt4_response = {
+    type: jsPsychPsychophysics,
+    response_type: "button",
+    button_choices: expt4_config.responseOptions,
     button_html: [
         '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
         '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
@@ -53,25 +38,48 @@ var response_display_expt4 = {
         '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
         '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
     ],
+    canvas_width: canvas.width,
+    canvas_height: canvas.height,
+    background_color: 'white',
     data: {
         screen: 'probe',
         task: taskN,
-        nItems: jsPsych.timelineVariable('nItems'),
+        nItems: jsPsych.timelineVariable('nStimuli'),
         timePerItem: jsPsych.timelineVariable('timePerItem'),
-        probePresent: jsPsych.timelineVariable('novelStim')
+        novelStim: jsPsych.timelineVariable('novelStim')
+    },
+    stimuli: function() {
+        let probe = genProtoImg();
+        const novelStim = jsPsych.timelineVariable('novelStim');
+        if (novelStim) {
+            probe.file = allStims.pop();
+        } else {
+            const nItems = jsPsych.timelineVariable('nStimuli');
+            const  timePerItem = jsPsych.timelineVariable('timePerItem');
+            let key = String(nItems) + "_" + String(timePerItem);
 
+            probe.file = targetsUsed[key].pop();
+        }
+        return [probe]
+    },
+    on_start: function(trial) {
+        // Get the filename without the leading dir
+        trial.data.stim = trial.stimuli[0].file.split("/").pop()
     },
     on_finish: function(data) {
-        data.Stimulus = probe.path.split("/").pop();
+        // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
+        // Seperate out different confidence levels
         if (data.responseProbeSeen === 1) {
             data.responseConfidence = data.response % 3
         } else {
-            data.responseConfidence = 6 - data.response % 3
+            // 2nd half of confidence levels are reversed
+            data.responseConfidence = (6 - data.response) % 3
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
     },
-};
+}
+
 
 // Pull items into a single procedure
 var expt4_procedure = {
@@ -79,7 +87,7 @@ var expt4_procedure = {
         cursor_off,
         fixation_expt4,
         cursor_on,
-        response_display_expt4
+        expt4_response
     ],
     timeline_variables: trialCombos_expt4,
     sample: {
