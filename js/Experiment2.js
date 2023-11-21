@@ -108,6 +108,17 @@ var feedback_node = {
     }
 };
 
+// prototype stimulus object
+const proto_img_obj = {
+    obj_type: 'image',
+    file: allStims[0],
+    startX: 0,
+    startY: 0,
+    width: imgSize[0],
+    height: imgSize[1],
+    origin_center: true,
+}
+
 // Generate array of targets
 var target_array_expt2 = {
     type: jsPsychCanvasButtonResponse,
