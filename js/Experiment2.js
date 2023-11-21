@@ -234,19 +234,17 @@ var expt2_procedure = {
     timeline: [
         cursor_off,
         fixation_expt2,
-        target_array_expt2,
+        expt2_array,
         cursor_on,
         meta_node,
-        response_display_expt2,
+        expt2_response,
         feedback_node
     ],
-    timeline_variables: trialCombos_expt2,
+    timeline_variables: expt2_trialCombos,
     sample: {
         type: 'fixed-repetitions',
         size: expt2_config.nTrialReps,
     },
 }; 
-
-// TODO: Need to add a way of incorporating Meta-capacity prompts and feedback conditionally into timeline based on config
 
 mainTimeline.push(expt2_procedure);
