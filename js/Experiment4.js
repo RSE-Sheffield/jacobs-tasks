@@ -1,22 +1,24 @@
-var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
 var key;
 var taskN = 4;
 
 // Generate all the different conditions
-let trialCombos_expt4 = jsPsych.randomization.factorial({
-    nItems: expt4_config.nItems,
+let expt4_trialCombos = jsPsych.randomization.factorial({
+    nStimuli: expt4_config.nStimuli,
     timePerItem: expt4_config.timePerItem,
     novelStim: expt4_config.novelStim
 })
 
 // Need to generate dummy targetsUsed object for standalone version
 if (typeof(targetsUsed) === 'undefined') {
-    var targetsUsed = genTargetsUsed(trialCombos_expt4, "novelStim");
-    var [allStims, targetsUsed] = setupStandalone(targetsUsed, expt4_config.nTrialReps);
+    // Generate empty dict with different condition keys
+    var targetsUsed = genTargetsUsedDict(expt4_trialCombos, "novelStim");
+    // Generate shuffled list of all stims
+    var allStims = genImgList(expt4_config.nImages)
+    // Add stims to targetsUsed dict
+    var [allStims, targetsUsed] = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
 } else {
     targetsUsed = shuffleTargets(targetsUsed);
 }
-
 
 // Generate fixation object
 var fixation_expt4 = generateFixation(
@@ -24,7 +26,7 @@ var fixation_expt4 = generateFixation(
     expt4_config.fixationPostTrial,
     taskN
 );
-
+        
 // Generate the response display
 const expt4_response = {
     type: jsPsychPsychophysics,
@@ -89,13 +91,11 @@ var expt4_procedure = {
         cursor_on,
         expt4_response
     ],
-    timeline_variables: trialCombos_expt4,
+    timeline_variables: expt4_trialCombos,
     sample: {
         type: 'fixed-repetitions',
         size: expt4_config.nTrialReps,
     },
 }; 
-
-// TODO: Need to add a way of incorporating Meta-capacity prompts and feedback conditionally into timeline based on config
 
 mainTimeline.push(expt4_procedure);
