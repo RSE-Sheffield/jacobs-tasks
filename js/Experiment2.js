@@ -176,16 +176,10 @@ const expt2_array = {
 }
 
 // Generate the response display
-var response_display_expt2 = {
-    type: jsPsychCanvasButtonResponse,
-    on_start: function(trial) {
-        probe = generateWMprobe(jsPsych.timelineVariable('probePresent'));
-    },
-    stimulus: function(c) {
-        drawStims(c, [probe]);
-    },
-    canvas_size: [canvas.width, canvas.height],
-    choices: expt2_config.responseOptions,
+const expt2_response = {
+    type: jsPsychPsychophysics,
+    response_type: "button",
+    button_choices: expt2_config.responseOptions,
     button_html: [
         '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
         '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
@@ -194,28 +188,46 @@ var response_display_expt2 = {
         '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
         '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
     ],
+    canvas_width: canvas.width,
+    canvas_height: canvas.height,
+    background_color: 'white',
     data: {
         screen: 'probe',
         task: taskN,
-        nItems: jsPsych.timelineVariable('nItems'),
-        timePerItem: jsPsych.timelineVariable('timePerItem'),
+        nItems: jsPsych.timelineVariable('nStimuli'),
         timePerItem: jsPsych.timelineVariable('timePerItem'),
         probePresent: jsPsych.timelineVariable('probePresent')
-
+    },
+    stimuli: function() {
+        let probe = {...proto_img_obj};
+        const probePresent = jsPsych.timelineVariable('probePresent');
+        if (probePresent) {
+            probe.file = usedStims.pop();
+        } else {
+            probe.file = allStims.pop();
+        }
+        return [probe]
+    },
+    on_start: function(trial) {
+        // Get the filename without the leading dir
+        trial.data.stim = trial.stimuli[0].file.split("/").pop()
     },
     on_finish: function(data) {
-        data.Stimulus = probe.path.split("/").pop();
+        // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
+        // Seperate out different confidence levels
         if (data.responseProbeSeen === 1) {
             data.responseConfidence = data.response % 3
         } else {
-            data.responseConfidence = 6 - data.response % 3
+            // 2nd half of confidence levels are reversed
+            data.responseConfidence = (6 - data.response) % 3
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
         
-        targetsUsed[key].push(...stimArray)
+        // Now save the images used
+        targetsUsed[key].push(...usedStims)
     },
-};
+}
 
 // Pull items into a single procedure
 var expt2_procedure = {
