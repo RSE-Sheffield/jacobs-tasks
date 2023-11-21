@@ -1,6 +1,9 @@
 var expt2_config = {
     nImages: 454,              // Total number of images available
+    nPos: 8,
     radius: 250,
+    radiusJitter: [0, 0],
+    angleJitter: [0, 0],
     fixationDuration: 500,
     fixationPostTrial: 500,
     arrayPostTrial: 0,

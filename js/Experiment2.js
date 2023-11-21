@@ -1,9 +1,7 @@
-var canvasCentre = [canvas.width/2 - imgSize/2, canvas.height/2 - imgSize/2];
+const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index))
 var allStims = genImgList(expt2_config.nImages)
 
-var stimArray;
-var allStims = Array.from({length: 454}, (value, index) => index + 1)
-allStims = jspShuffle(allStims)
+var usedStims;
 var targetsUsed = {};
 var key;
 var taskN = 2;
@@ -120,29 +118,62 @@ const proto_img_obj = {
 }
 
 // Generate array of targets
-var target_array_expt2 = {
-    type: jsPsychCanvasButtonResponse,
-    on_start: function(trial){
-        var nItems = jsPsych.timelineVariable('nItems');
-        var timePerItem = jsPsych.timelineVariable('timePerItem');
-        key = String(nItems) + "_" + String(timePerItem);
-        stimArray = generateStims(jsPsych.timelineVariable('nItems'));
-        if (!(key in targetsUsed)) targetsUsed[key] = [];
-    },
-    stimulus: function(c) {
-        drawStims(c, stimArray);
-    },
-    canvas_size: [canvas.width, canvas.height],
+const expt2_array = {
+    type: jsPsychPsychophysics,
+    response: "button",
     choices: [],
-    trial_duration: function(){
-        return jsPsych.timelineVariable('nItems') * jsPsych.timelineVariable('timePerItem');
-    },
-    post_trial_gap: expt2_config.arrayPostTrial,
+    canvas_width: canvas.width,
+    canvas_height: canvas.height,
+    background_color: 'white',
     data: {
-        screen: 'memory array',
+        screen: "memory array",
         task: taskN
     },
-};
+    stimuli: function() {
+        let nStimuli = jsPsych.timelineVariable('nStimuli')
+        let currStims = [];
+
+        let rectPos = jspRand.sampleWithoutReplacement(e2pos, nStimuli)
+
+        usedStims = allStims.slice(0, nStimuli)
+        allStims = allStims.slice(nStimuli, )
+
+        for (let i = 0; i < nStimuli; i++) {
+            // This deep-copies the object each time else you end up with
+            // the same properties for all objects
+            stim = {...proto_img_obj}
+            
+            // Generate and set x and y positions for each stim
+            var [xPos, yPos] = generatePosCircle(
+                rectPos[i],
+                expt2_config.radius,
+                expt2_config.radiusJitter,
+                expt2_config.angleJitter,
+                expt2_config.nPos
+            )
+            stim.startX = xPos
+            stim.startY = yPos
+
+            // Set fill colour for each stim
+            stim.file = usedStims[i]
+            currStims.push(stim)
+        }
+        return currStims
+    },
+    on_start: function(trial){
+        // Generate key for condition and add to targetsUsed dict if not
+        // already there
+        var nItems = jsPsych.timelineVariable('nStimuli');
+        var timePerItem = jsPsych.timelineVariable('timePerItem');
+        key = String(nItems) + "_" + String(timePerItem);
+        if (!(key in targetsUsed)) targetsUsed[key] = [];
+
+        // Stimuli aren't saved here yet as what gets saved will depend on probe
+    },
+    trial_duration: function(){
+        return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
+    },
+}
 
 // Generate the response display
 var response_display_expt2 = {
