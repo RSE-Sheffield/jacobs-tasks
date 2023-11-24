@@ -16,13 +16,14 @@ var clickedColour = "";
 const e3_proto_rect_obj = {
     obj_type: 'rect',
     startX: 0,
-    startY: 575,
+    startY: 275,
     width: stimWidth,
     height: stimHeight,
     line_color: 'black',
     fill_color: 'black',
     show_start_time: 0,
     show_end_time: expt3_config.maxTrialLengthMs,
+    origin_center: true,
 };
 
 const expt3_trial = {
@@ -44,8 +45,8 @@ const expt3_trial = {
         let rectPos = jspRand.sampleWithoutReplacement(expt3_config.allPostions, nStim);
 
         // This draws the target bar across the bottom of the canvas
-        trial.stimuli[0].width = 1600; // Not sure why this is double the width of the canvas
-        trial.stimuli[0].height = 25;
+        trial.stimuli[0].width = 800; // Not sure why this is double the width of the canvas
+        trial.stimuli[0].height = 20;
         trial.stimuli[0].fill_color = targetColour;
 
         // This draws the individual stimuli on the canvas
@@ -53,7 +54,8 @@ const expt3_trial = {
             var [xPos, yPos] = generatePosGrid(
                 rectPos[i-1],
                 expt3_config.squareDims,
-                expt3_config.posJitterRange
+                expt3_config.posJitterRange,
+                [100, 65]
             )
             
             // Generate random start and end times

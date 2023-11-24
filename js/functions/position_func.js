@@ -35,11 +35,12 @@ function generatePosCircle(posN, radius, radiusJitter = [0, 0], angleJitter = [0
  * @param {number} posN - Integer indicating position within the grid (0 top left, increasing across cols)
  * @param {number[]} squareDims - Array of 2 integers indicating the dimensions of the grid square containing the stimulus
  * @param {number[]} [jitterRange=[0, 0]] - Array of 2 integers indicating the range of jitter for both X and Y coordinates
+ * @param {number[]} [buffer=[0, 0]] - Array of 2 integers indicating the buffer for edges of the grid
  * @param {number} stride - Integer indicating the number of squares to a row in the grid
  * 
  * @returns {number[]} - Array of X and Y coordinates for stimulus
  */
-function generatePosGrid(posN, squareDims, jitterRange = [0,0], stride = 4) {
+function generatePosGrid(posN, squareDims, jitterRange = [0,0], buffer = [0, 0], stride = 4) {
     let [squareWidth, squareHeight] = squareDims;
     let [xLoc, yLoc] = getXYfromPos(posN, stride);
             
@@ -48,8 +49,8 @@ function generatePosGrid(posN, squareDims, jitterRange = [0,0], stride = 4) {
     let jitterY = jspRand.randomInt(...jitterRange);
     
     // Generate x and y coords from locations and jitter
-    let xPos = (squareWidth/2) + (squareWidth * xLoc) + jitterX
-    let yPos = (squareHeight/2) + (squareHeight * yLoc) + jitterY
+    let xPos = (squareWidth/2) + (squareWidth * xLoc) + jitterX - (canvas.width/2 - buffer[0])
+    let yPos = (squareHeight/2) + (squareHeight * yLoc) + jitterY - (canvas.height/2 - buffer[1])
 
     return [xPos, yPos]
 }
