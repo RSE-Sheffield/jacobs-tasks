@@ -13,7 +13,7 @@ const [stimWidth, stimHeight] = expt3_config.stimulusDims;
 var targetColour, loopStart;
 var clickedColour = "";
 
-let proto_rect_obj = {
+const e3_proto_rect_obj = {
     obj_type: 'rect',
     startX: 0,
     startY: 575,
@@ -27,7 +27,7 @@ let proto_rect_obj = {
 
 const expt3_trial = {
     type: jsPsychPsychophysics,
-    stimuli: Array(nStim + 1).fill(proto_rect_obj),
+    stimuli: Array(nStim + 1).fill(e3_proto_rect_obj),
     response: "button",
     choices: [],
     canvas_width: canvas.width,

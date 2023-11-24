@@ -10,7 +10,7 @@ var fixation = generateFixation(
     taskN
 );
 
-const proto_rect_obj = {
+const e1_proto_rect_obj = {
     obj_type: 'rect', // means a rectangle
     startX: 0, // location in the canvas
     startY: 0,
@@ -23,7 +23,7 @@ const proto_rect_obj = {
     origin_center: true,
 }
 
-const stimArray = Array(expt1_config.startValue).fill(proto_rect_obj)
+const stimArray = Array(expt1_config.startValue).fill(e1_proto_rect_obj)
 
 // Generate target array
 var expt1_array = {
@@ -72,7 +72,7 @@ var expt1_array = {
 
 var expt1_probe = {
     type: jsPsychPsychophysics,
-    stimuli: [proto_rect_obj],
+    stimuli: [e1_proto_rect_obj],
     response_type: "button",
     button_choices: ["yes", "no"],
     button_html: [
@@ -110,7 +110,7 @@ var expt1_probe = {
             correctCount += 1;
             if (correctCount == expt1_config.staircaseUp) {
                 [correctCount, incorrectCount] = [0, 0];
-                if (nStimuli < expt1_config.maxValue) stimArray.push(proto_rect_obj);
+                if (nStimuli < expt1_config.maxValue) stimArray.push(e1_proto_rect_obj);
             }
         } else {
             incorrectCount += 1;
