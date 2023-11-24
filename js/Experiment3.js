@@ -74,19 +74,20 @@ const expt3_trial = {
         let x = event.offsetX;
         let y = event.offsetY;
 
-        for (let i = 1; i < trial.stimuli.length; i++) {
-            let x1 = jsPsych.getCurrentTrial().stim_array[i].startX - (stimWidth/2);
+        trial = jsPsych.getCurrentTrial()
+        for (let i = 1; i < trial.stim_array.length; i++) {
+            let x1 = trial.stim_array[i].startX - (stimWidth/2);
             let x2 = x1 + stimWidth;
 
-            let y1 = jsPsych.getCurrentTrial().stim_array[i].startY - (stimHeight/2);
+            let y1 = trial.stim_array[i].startY - (stimHeight/2);
             let y2 = y1 + stimHeight;
 
             let inX = x1 < x & x < x2;
             let inY = y1 < y & y < y2;
 
             if (inX & inY) {
-                clickedColour = jsPsych.getCurrentTrial().stim_array[i].fill_color;
-                jsPsych.getCurrentTrial().end_trial();
+                clickedColour = trial.stim_array[i].fill_color;
+                trial.end_trial();
             }
 
         }
