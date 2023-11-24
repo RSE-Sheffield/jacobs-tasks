@@ -88,6 +88,8 @@ var expt1_probe = {
             probe_col = unusedCols[0];
         }        
         trial.stimuli[0].fill_color = probe_col;
+        trial.stimuli[0].show_end_time = null; 
+
         trial.data.probe_colour = probe_col;
     },
     canvas_width: canvas.width,
