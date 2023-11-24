@@ -75,10 +75,7 @@ var expt1_probe = {
     stimuli: [e1_proto_rect_obj],
     response_type: "button",
     button_choices: ["yes", "no"],
-    button_html: [
-        '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
-    ],
+    button_html: '<button class="jspsych-btn colour-btn">%choice%</button>',
     horiz_button_margin: "40px",
     vert_button_margin: "20px",
     on_start: function(trial) {
