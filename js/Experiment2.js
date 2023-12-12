@@ -1,5 +1,4 @@
 const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index))
-var allStims = genImgList(expt2_config.nImages)
 
 var usedStims;
 var targetsUsed = {};
