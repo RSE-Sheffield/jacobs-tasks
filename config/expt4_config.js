@@ -1,4 +1,6 @@
 var expt4_config = {
+    run: true,
+    practice: true,
     nImages: 454,              // Total number of images available (only use to generate dummy runs)
     fixationDuration: 500,
     fixationPostTrial: 500,

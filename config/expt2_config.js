@@ -1,4 +1,6 @@
 var expt2_config = {
+    run: true,
+    practice: true,
     nImages: 454,              // Total number of images available
     nPos: 8,
     radius: 250,

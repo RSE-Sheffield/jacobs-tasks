@@ -84,7 +84,7 @@ const expt4_response = {
 
 
 // Pull items into a single procedure
-var expt4_procedure = {
+const expt4_main = {
     timeline: [
         cursor_off,
         fixation_expt4,
@@ -96,6 +96,37 @@ var expt4_procedure = {
         type: 'fixed-repetitions',
         size: expt4_config.nTrialReps,
     },
-}; 
+};
 
-mainTimeline.push(expt4_procedure);
+const expt4_start = {
+    type: jsPsychInstructions,
+    pages: expt4_inst,
+    show_clickable_nav: true,
+};
+
+const expt4_prac = {
+    timeline: [],
+    conditional_function: function() {
+        return expt4_config.practice
+    }
+};
+
+const expt4_end = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press any key when you are ready to move onto the next task</p>',
+    choices: " ",
+};
+
+const expt4_proc = {
+    timeline: [
+        expt4_start,
+        expt4_prac,
+        expt4_main,
+        expt4_end,
+    ],
+    conditional_function: function() {
+        return expt4_config.run
+    }
+}
+
+mainTimeline.push(expt4_proc);

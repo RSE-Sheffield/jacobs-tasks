@@ -26,7 +26,7 @@ const e1_proto_rect_obj = {
 const stimArray = Array(expt1_config.startValue).fill(e1_proto_rect_obj)
 
 // Generate target array
-var expt1_array = {
+const expt1_array = {
     type: jsPsychPsychophysics,
     stimuli: stimArray,
     response: "button",
@@ -70,7 +70,7 @@ var expt1_array = {
     },
 }
 
-var expt1_probe = {
+const expt1_probe = {
     type: jsPsychPsychophysics,
     stimuli: [e1_proto_rect_obj],
     response_type: "button",
@@ -122,7 +122,7 @@ var expt1_probe = {
 };
 
 // Pull items into a single procedure 
-var expt1_procedure = {
+const expt1_main = {
     timeline: [
         cursor_off,
         fixation,
@@ -140,6 +140,38 @@ var expt1_procedure = {
     },
 };
 
+const expt1_start = {
+    type: jsPsychInstructions,
+    pages: expt1_inst,
+    show_clickable_nav: true,
+};
+
+const expt1_prac = {
+    timeline: [],
+    conditional_function: function() {
+        return expt1_config.practice
+    }
+};
+
+const expt1_end = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press any key when you are ready to move onto the next task</p>',
+    choices: " ",
+};
+
+expt1_proc = {
+    timeline: [
+        expt1_start,
+        expt1_prac,
+        expt1_main,
+        expt1_end,
+    ],
+    conditional_function: function() {
+        return expt1_config.run
+    },
+};
+
+
 // TODO: Need to add a way to pass the outcome (final number of items) of this task to a later task 
 
-mainTimeline.push(expt1_procedure)
+mainTimeline.push(expt1_proc)

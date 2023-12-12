@@ -139,9 +139,40 @@ const start_timeline = {
     },
 };
 
-const top_node = {
+const expt3_main = {
     timeline: [start_timeline, loop_node],
     repetitions: expt3_config.loopRepetitions,
 };
 
-mainTimeline.push(top_node);
+const expt3_start = {
+    type: jsPsychInstructions,
+    pages: expt3_inst,
+    show_clickable_nav: true,
+};
+
+const expt3_prac = {
+    timeline: [],
+    conditional_function: function() {
+        return expt2_config.practice
+    }
+};
+
+const expt3_end = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press any key when you are ready to move onto the next task</p>',
+    choices: " ",
+};
+
+const expt3_proc = {
+    timeline: [
+        expt3_start,
+        expt3_prac,
+        expt3_main,
+        expt3_end,
+    ],
+    conditional_function: function() {
+        return expt3_config.run
+    }
+}
+
+mainTimeline.push(expt3_proc);

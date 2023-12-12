@@ -31,7 +31,7 @@ var fixation_expt2 = generateFixation(
 );
 
 // Object for meta-capacity prompt
-var meta_capacity = {
+const meta_capacity = {
     type: jsPsychHtmlButtonResponse,
     on_start: function(trial) {
         let type = jsPsych.timelineVariable('metaOptions')
@@ -65,7 +65,7 @@ var meta_capacity = {
 
 // Node contianing just meta-capacity, with conditional function that
 // determines whether it is used from flag in config.
-var meta_node = {
+const meta_node = {
     timeline: [meta_capacity],
     conditional_function: function() {
         return expt2_config.metaCapacity
@@ -73,7 +73,7 @@ var meta_node = {
 };
 
 // Object for feedback
-var feedback = {
+const feedback = {
     type: jsPsychHtmlButtonResponse,
     trial_duration: expt2_config.feedbackDuration,
     stimulus: function(){
@@ -99,7 +99,7 @@ var feedback = {
 };
 
 // Conditional node for the feedback
-var feedback_node = {
+const feedback_node = {
     timeline: [feedback],
     conditional_function: function() {
         return expt2_config.feedback
@@ -222,7 +222,7 @@ const expt2_response = {
 }
 
 // Pull items into a single procedure
-var expt2_procedure = {
+const expt2_main = {
     timeline: [
         cursor_off,
         fixation_expt2,
@@ -239,4 +239,35 @@ var expt2_procedure = {
     },
 }; 
 
-mainTimeline.push(expt2_procedure);
+const expt2_start = {
+    type: jsPsychInstructions,
+    pages: expt2_inst,
+    show_clickable_nav: true,
+};
+
+const expt2_prac = {
+    timeline: [],
+    conditional_function: function() {
+        return expt2_config.practice
+    }
+};
+
+const expt2_end = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press any key when you are ready to move onto the next task</p>',
+    choices: " ",
+};
+
+const expt2_proc = {
+    timeline: [
+        expt2_start,
+        expt2_prac,
+        expt2_main,
+        expt2_end,
+    ],
+    conditional_function: function() {
+        return expt2_config.run
+    }
+}
+
+mainTimeline.push(expt2_proc);
