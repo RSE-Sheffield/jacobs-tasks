@@ -1,9 +1,9 @@
 function generateFixation(duration, postTrial, taskN){
     // Standard fixation object
     return {
-        type: jsPsychHtmlKeyboardResponse,
+        type: jsPsychHtmlButtonResponse,
         stimulus: '<div style="font-size:60px;">+</div>',
-        choices: "NO_KEYS",
+        choices: "",
         trial_duration: duration,
         post_trial_gap: postTrial, 
         data: {

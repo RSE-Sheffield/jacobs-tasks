@@ -112,9 +112,9 @@ const expt4_prac = {
 };
 
 const expt4_end = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press any key when you are ready to move onto the next task</p>',
-    choices: " ",
+    type: jsPsychHtmlButtonResponse,
+    stimulus: '<p>Well done, you have finished <strong>Task ' +taskN+ '</strong></p><p>Press the button below when you are ready to move onto the next task</p>',
+    choices: ["Continue"],
 };
 
 const expt4_proc = {
