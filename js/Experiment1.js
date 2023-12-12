@@ -2,6 +2,7 @@ var [correctCount, incorrectCount] = [0, 0];
 
 const e1Pos = Array.from({length: expt1_config.nPositions}, (_value, index) => index)
 var taskN = 1;
+var timePerItem
 
 // Generate fixation object
 var fixation = generateFixation(
@@ -169,6 +170,21 @@ expt1_proc = {
     conditional_function: function() {
         return expt1_config.run
     },
+    on_timeline_finish: function() {
+        if (expt2_config.adaptive) {
+            // Get all trials so far
+            const allTrials = jsPsych.data.allData.trials;
+            // Get the most recent number of probe trials specified by adaptLookBack param
+            const probeTrials = allTrials.filter(trial => trial.screen === "probe").slice(-expt2_config.adaptLookBack);
+            console.log(probeTrials)
+            // Find the rounded average value for nTargets over those trials
+            const average = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nTargets"], 0) / probeTrials.length);
+            // Get the corresponding time for that number of items
+            timePerItem = expt2_config.adaptiveTimes[average]
+
+            console.log(average, timePerItem)
+        }
+    }
 };
 
 

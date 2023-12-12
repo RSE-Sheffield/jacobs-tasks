@@ -30,4 +30,17 @@ var expt2_config = {
     showFeedbackOptions: [false, true],
     feedbackDuration: 1500,
     feedbackImgs: ['./img/feedbackPos.png', './img/feedbackNeg.png'],
+    adaptive: false,
+    adaptLookBack: 5,
+    adaptiveTimes: {
+        2: 700,
+        3: 650,
+        4: 600,
+        5: 550,
+        6: 500,
+        7: 450,
+        8: 400,
+        9: 350,
+        10: 300
+    }
 }

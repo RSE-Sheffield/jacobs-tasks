@@ -5,18 +5,19 @@ var targetsUsed = {};
 var key;
 var taskN = 2;
 
-// Preload stimuli
-const preload = {
-    type: jsPsychPreload,
-    images: allStims,
+// If we are using adaptive then use a placeholder value which will be
+// replaced by the one generated at the end of task 1
+// Otherwise use the value(s) from the expt2_config
+if ( expt2_config.adaptive ) {
+    timePerItem = [100];
+} else {
+    timePerItem = expt2_config.timePerItem;
 }
-
-mainTimeline.push(preload);
 
 // Generate all the different conditions
 let expt2_trialCombos = jspRand.factorial({
     nStimuli: expt2_config.nStimuli,
-    timePerItem: expt2_config.timePerItem,
+    timePerItem: timePerItem,
     probePresent: expt2_config.probePresent,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
     ...(expt2_config.feedback? {showFeedback: expt2_config.showFeedbackOptions}: {}),
@@ -159,7 +160,11 @@ const expt2_array = {
         // Stimuli aren't saved here yet as what gets saved will depend on probe
     },
     trial_duration: function(){
+        if (expt2_config.adaptive) {
+            return jsPsych.timelineVariable('nStimuli') * timePerItem;
+        } else {
         return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
+        }
     },
 }
 
