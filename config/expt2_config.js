@@ -29,4 +29,5 @@ var expt2_config = {
     feedback: false,
     showFeedbackOptions: [false, true],
     feedbackDuration: 1500,
+    feedbackImgs: ['./img/feedbackPos.png', './img/feedbackNeg.png'],
 }

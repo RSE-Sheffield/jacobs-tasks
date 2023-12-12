@@ -84,9 +84,9 @@ const feedback = {
         if (jsPsych.timelineVariable('showFeedback')) {
             var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
             if(last_trial_correct){
-                return "<p>Correct!</p>"; // the parameter value has to be returned from the function
+                return '<img src=' +expt2_config.feedbackImgs[0]+ ' width="200" height="200"><h2>Correct!</h2>'; // the parameter value has to be returned from the function
             } else {
-                return "<p>Wrong.</p>"; // the parameter value has to be returned from the function
+                return '<img src=' +expt2_config.feedbackImgs[1]+ ' width="200" height="200"><h2>Incorrect</h2>'; // the parameter value has to be returned from the function
             }
         } else {
             return "<p></p>"
