@@ -12,5 +12,6 @@ var expt3_config = {
     squareDims: [150, 150],
     posJitterRange: [-25, 25],
     loopRepetitions: 5,
-    stimImgs: ["./img/bird-transparent-lr.png", "./img/bird-transparent-rl.png"]
+    stimImgs: ["./img/bird-transparent-lr.png", "./img/bird-transparent-rl.png"],
+    highScore: 50,
 }

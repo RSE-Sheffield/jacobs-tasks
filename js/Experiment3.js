@@ -12,6 +12,7 @@ const [stimWidth, stimHeight] = expt3_config.stimulusDims;
 // Initialise these at the top level so they can be accessed by functions
 var targetColour, loopStart;
 var clickedColour = "";
+var taskN = 3;
 
 const expt3_trial = {
     type: jsPsychPsychophysics,
@@ -43,8 +44,33 @@ const expt3_trial = {
         targetStim.show_end_time = expt3_config.maxTrialLengthMs;
         stimArray.push(targetStim);
 
-        // Need to set up:
-        //  Scores [1,2]
+        // Generate and display scores
+        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["correct"], 0)
+
+        const scoreText = {
+            obj_type: 'text',
+            startX: 100,
+            startY: 25,
+            content: 'Current Score: ' + currScore,
+            font: "22px 'Arial'",
+            text_color: 'black',
+            show_start_time: 0, // ms after the start of the trial
+            show_end_time: expt3_config.maxTrialLengthMs,
+        }
+        
+        const highScore = {
+            obj_type: 'text',
+            startX: 700,
+            startY: 25,
+            content: 'High Score: ' + expt3_config.highScore,
+            font: "22px 'Arial'",
+            text_color: 'blue',
+            show_start_time: 0, // ms after the start of the trial
+            show_end_time: expt3_config.maxTrialLengthMs,
+        }
+        
+        stimArray.push(scoreText);
+        stimArray.push(highScore);
         
         // This draws the individual stimuli on the canvas
         for (let i = 0; i < nStim; i++) {
@@ -121,15 +147,19 @@ const expt3_trial = {
         data.response = clickedColour;
         if (clickedColour === "") {
             // No Response
-            data.correct = -1;
+            data.correct = 0;
         } else if (clickedColour === targetColour) {
             // Correct response
             data.correct = 1;
         } else {
             // Incorrect response
-            data.correct = 0;
+            data.correct = -1;
         }
         clickedColour = "";
+    },
+    data: {
+        screen: 'array',
+        task: taskN,
     },
 };
 
