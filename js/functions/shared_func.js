@@ -61,3 +61,17 @@ function genProtoImg() {
         origin_center: true,
     }
 }
+
+function genProtoRect() {
+    // prototype rect object
+    return e3_proto_rect_obj = {
+        obj_type: 'rect',
+        startX: 0,
+        startY: 275,
+        width: stimWidth,
+        height: stimHeight,
+        line_color: 'black',
+        fill_color: 'black',
+        origin_center: true,
+    };
+}

@@ -8,8 +8,9 @@ var expt3_config = {
     maxTrialLengthMs: 4000,
     startTimeRangeMs: [500, 1000],
     durationRangeMs: [1500, 2500],
-    stimulusDims: [60, 60],
+    stimulusDims: [95, 95],
     squareDims: [150, 150],
     posJitterRange: [-25, 25],
-    loopRepetitions: 5.
+    loopRepetitions: 5,
+    stimImgs: ["./img/bird-transparent-lr.png", "./img/bird-transparent-rl.png"]
 }

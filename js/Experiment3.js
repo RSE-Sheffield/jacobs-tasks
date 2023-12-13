@@ -13,29 +13,18 @@ const [stimWidth, stimHeight] = expt3_config.stimulusDims;
 var targetColour, loopStart;
 var clickedColour = "";
 
-const e3_proto_rect_obj = {
-    obj_type: 'rect',
-    startX: 0,
-    startY: 275,
-    width: stimWidth,
-    height: stimHeight,
-    line_color: 'black',
-    fill_color: 'black',
-    show_start_time: 0,
-    show_end_time: expt3_config.maxTrialLengthMs,
-    origin_center: true,
-};
-
 const expt3_trial = {
     type: jsPsychPsychophysics,
-    stimuli: Array(nStim + 1).fill(e3_proto_rect_obj),
     response: "button",
     choices: [],
     canvas_width: canvas.width,
     canvas_height: canvas.height,
     background_color: 'white',
     trial_duration: expt3_config.maxTrialLengthMs,
-    on_start: function(trial) {
+    stimuli: function() {
+        // Empty array to be filled and returned
+        let stimArray = [];
+
         // Sample non-target colours
         let rectCols = jspRand.sampleWithoutReplacement(shufCols, nStim - 1);
         // Add target colour back to the array
@@ -44,52 +33,84 @@ const expt3_trial = {
         // Sample different positions
         let rectPos = jspRand.sampleWithoutReplacement(expt3_config.allPostions, nStim);
 
-        // This draws the target bar across the bottom of the canvas
-        trial.stimuli[0].width = 800; // Not sure why this is double the width of the canvas
-        trial.stimuli[0].height = 20;
-        trial.stimuli[0].fill_color = targetColour;
+        // This sets up the target bar across the bottom of the canvas
+        let targetStim = genProtoRect();
 
+        targetStim.width = 800;
+        targetStim.height = 20;
+        targetStim.fill_color = targetColour;
+        targetStim.show_start_time = 0;
+        targetStim.show_end_time = expt3_config.maxTrialLengthMs;
+        stimArray.push(targetStim);
+
+        // Need to set up:
+        //  Scores [1,2]
+        
         // This draws the individual stimuli on the canvas
-        for (let i = 1; i < trial.stimuli.length; i++) {
+        for (let i = 0; i < nStim; i++) {
             var [xPos, yPos] = generatePosGrid(
-                rectPos[i-1],
+                rectPos[i],
                 expt3_config.squareDims,
                 expt3_config.posJitterRange,
                 [100, 65]
-            )
-            
-            // Generate random start and end times
-            let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs);
-            let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs);
-            
-            // Update the stimulus location
-            trial.stimuli[i].startX = xPos;
-            trial.stimuli[i].startY = yPos;
-            // Update the stimulus colour
-            trial.stimuli[i].fill_color = rectCols[i-1];
-            // Update the stimulus start and end time
-            trial.stimuli[i].show_start_time = startTime;
-            trial.stimuli[i].show_end_time = endTime;
-        }
+                )
+                
+                // Generate random start and end times
+                let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs);
+                let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs);
+                
+                var rectStim = genProtoRect();
+
+                // Update the col stimulus location
+                rectStim.startX = xPos;
+                rectStim.startY = yPos;
+                // Update the col stimulus start and end time
+                rectStim.show_start_time = startTime;
+                rectStim.show_end_time = endTime;
+                // Update the col stimulus colour
+                rectStim.fill_color = rectCols[i];
+                
+                var imgStim = genProtoImg();
+
+                // Update the img stimulus location
+                imgStim.startX = xPos;
+                imgStim.startY = yPos;
+                // Update the img stimulus start and end time
+                imgStim.show_start_time = startTime;
+                imgStim.show_end_time = endTime;
+
+                // Randomly select either L or R facing image and update img stim
+                imgStim.file = (Math.random() > 0.5) ? expt3_config.stimImgs[0] : expt3_config.stimImgs[1];
+                
+                // Add rect and img to stim array
+                stimArray.push(rectStim);
+                stimArray.push(imgStim);
+            }
+
+        return stimArray
     },
     mouse_down_func: function(event) {
         let x = event.offsetX;
         let y = event.offsetY;
 
-        trial = jsPsych.getCurrentTrial()
-        for (let i = 1; i < trial.stim_array.length; i++) {
-            let x1 = trial.stim_array[i].startX - (stimWidth/2);
+        
+        // Only get info for the rect objects
+        trial = jsPsych.getCurrentTrial().stim_array.filter(obj => obj.obj_type === "rect")
+
+        // Skip object at index 0 as this is the target
+        for (let i = 1; i < trial.length; i++) {
+            let x1 = trial[i].startX - (stimWidth/2);
             let x2 = x1 + stimWidth;
 
-            let y1 = trial.stim_array[i].startY - (stimHeight/2);
+            let y1 = trial[i].startY - (stimHeight/2);
             let y2 = y1 + stimHeight;
 
             let inX = x1 < x & x < x2;
             let inY = y1 < y & y < y2;
 
             if (inX & inY) {
-                clickedColour = trial.stim_array[i].fill_color;
-                trial.end_trial();
+                clickedColour = trial[i].fill_color;
+                jsPsych.getCurrentTrial().end_trial();
             }
 
         }
