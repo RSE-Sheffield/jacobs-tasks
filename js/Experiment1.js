@@ -171,14 +171,12 @@ expt1_proc = {
         return expt1_config.run
     },
     on_timeline_finish: function() {
-        if (expt2_config.adaptive) {
-            // Get all trials so far
-            const allTrials = jsPsych.data.allData.trials;
-            // Get the most recent number of probe trials specified by adaptLookBack param
-            const probeTrials = allTrials.filter(trial => trial.screen === "probe").slice(-expt2_config.adaptLookBack);
-            // Find the rounded average value for nTargets over those trials
-            expt1_score = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nTargets"], 0) / probeTrials.length);
-        }
+        // Get all trials so far
+        const allTrials = jsPsych.data.allData.trials;
+        // Get the most recent number of probe trials specified by adaptLookBack param
+        const probeTrials = allTrials.filter(trial => trial.screen === "probe").slice(-expt2_config.adaptLookBack);
+        // Find the rounded average value for nTargets over those trials
+        expt1_score = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nTargets"], 0) / probeTrials.length);
     }
 };
 
