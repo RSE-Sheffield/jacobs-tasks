@@ -6,7 +6,7 @@ var key;
 var taskN = 2;
 
 // If we are using adaptive then use a placeholder value which will be
-// replaced by the one generated at the end of task 1
+// replaced by the value corresponding to  task 1 score
 // Otherwise use the value(s) from the expt2_config
 if ( expt2_config.adaptive ) {
     timePerItem = [100];
@@ -161,7 +161,7 @@ const expt2_array = {
     },
     trial_duration: function(){
         if (expt2_config.adaptive) {
-            return jsPsych.timelineVariable('nStimuli') * timePerItem;
+            return jsPsych.timelineVariable('nStimuli') * expt2_config.adaptiveTimes[expt1_score];
         } else {
         return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
         }
