@@ -8,17 +8,21 @@ var stimDuration;
 // If we are using adaptive then use a placeholder value which will be
 // replaced by the value corresponding to  task 1 score
 // Otherwise use the value(s) from the expt2_config
-if ( expt2_config.adaptive ) {
-    timePerItem = [100];
-} else {
-    timePerItem = expt2_config.timePerItem;
-}
+
+let encodeTime = expt2_config.adaptiveEncode.use ?
+                    expt2_config.adaptivePlaceholder :
+                    expt2_config.timePerItem
+
+let consolTime = expt2_config.adaptiveConsol.use ? 
+                    expt2_config.adaptivePlaceholder :
+                    expt2_config.consolidationTime
+
 
 // Generate all the different conditions
 let expt2_trialCombos = jspRand.factorial({
     nStimuli: expt2_config.nStimuli,
-    timePerItem: timePerItem,
-    consolidationTime: expt2_config.consolidationTime,
+    timePerItem: encodeTime,
+    consolidationTime: consolTime,
     probePresent: expt2_config.probePresent,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
     ...(expt2_config.feedback? {showFeedback: expt2_config.showFeedbackOptions}: {}),
@@ -107,6 +111,27 @@ const feedback_node = {
     },
 };
 
+function gen_time(timelineVar, adaptiveProps) {
+    // If we're using adaptive times
+    if (adaptiveProps.use) {
+        // See what type of trial we have
+        trialType = timelineVar
+        if (trialType === "adapt") {
+            // If it's adaptive then get the time value from the
+            // adaptiveTimes object
+            return adaptiveProps.adaptTimes[expt1_score];
+        } else if (trialType === "reg") {
+            // If it's a regular trial then get the  time value from
+            // the config
+            return adaptiveProps.regTime;
+        }
+    } else {
+        // If we're not using adaptive times then just get the supplied 
+        // time value
+        return timelineVar;
+    }
+};
+
 // Generate array of targets
 const expt2_array = {
     type: jsPsychPsychophysics,
@@ -121,12 +146,12 @@ const expt2_array = {
     },
     stimuli: function() {
         let nStimuli = jsPsych.timelineVariable('nStimuli')
-        let encodeTime;
-        if (expt2_config.adaptive) {
-            encodeTime = expt2_config.adaptiveTimes[expt1_score];
-        } else {
-            encodeTime = jsPsych.timelineVariable('timePerItem');
-        }
+
+        let encodeTime = gen_time(
+            jsPsych.timelineVariable('timePerItem'),
+            expt2_config.adaptiveEncode);
+
+        // Get the overall stim duration time
         stimDuration = nStimuli * encodeTime;
         let currStims = [];
 
@@ -162,18 +187,21 @@ const expt2_array = {
         // Generate key for condition and add to targetsUsed dict if not
         // already there
         var nItems = jsPsych.timelineVariable('nStimuli');
-        if (expt2_config.adaptive) {
-            encodeTime = expt2_config.adaptiveTimes[expt1_score];
-        } else {
-            encodeTime = jsPsych.timelineVariable('timePerItem');
-        }
+        let encodeTime = gen_time(
+            jsPsych.timelineVariable('timePerItem'),
+            expt2_config.adaptiveEncode);
+        
         key = String(nItems) + "_" + String(encodeTime);
         if (!(key in targetsUsed)) targetsUsed[key] = [];
 
         // Stimuli aren't saved here yet as what gets saved will depend on probe
     },
     trial_duration: function(){
-        return stimDuration + jsPsych.timelineVariable('consolidationTime')
+        let consolTime = gen_time(
+            jsPsych.timelineVariable('consolidationTime'),
+            expt2_config.adaptiveConsol);
+
+        return stimDuration + consolTime
     },
 };
 

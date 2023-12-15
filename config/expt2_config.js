@@ -30,17 +30,41 @@ var expt2_config = {
     showFeedbackOptions: [false, true],
     feedbackDuration: 1500,
     feedbackImgs: ['./img/feedbackPos.png', './img/feedbackNeg.png'],
-    adaptive: false,
+
+    // Section for adaptive tasks
+    adaptiveEncode: {
+        use: true,
+        regTime: 500,
+        adaptTimes: {
+            2: 700,
+            3: 650,
+            4: 600,
+            5: 550,
+            6: 500,
+            7: 450,
+            8: 400,
+            9: 350,
+            10: 300
+        },
+    },
+    adaptiveConsol: {
+        use: false,
+        regTime: 3000, 
+        adaptTimes: {
+            2: 3000,
+            3: 2750,
+            4: 2500,
+            5: 2250,
+            6: 2000,
+            7: 1750,
+            8: 1500,
+            9: 1250,
+            10: 1000
+        },
+    },
     adaptLookBack: 5,
-    adaptiveTimes: {
-        2: 700,
-        3: 650,
-        4: 600,
-        5: 550,
-        6: 500,
-        7: 450,
-        8: 400,
-        9: 350,
-        10: 300
-    }
+    // This bit is key, use as a placeholder for the timeline_variables
+    // The use a function in the Expt objects to generate the appropriate
+    // values
+    adaptivePlaceholder: ["adapt", "reg"],
 }
