@@ -187,11 +187,16 @@ const expt2_array = {
         // Generate key for condition and add to targetsUsed dict if not
         // already there
         var nItems = jsPsych.timelineVariable('nStimuli');
+
         let encodeTime = gen_time(
             jsPsych.timelineVariable('timePerItem'),
             expt2_config.adaptiveEncode);
+
+        let consolTime = gen_time(
+            jsPsych.timelineVariable('consolidationTime'),
+            expt2_config.adaptiveConsol);
         
-        key = String(nItems) + "_" + String(encodeTime);
+        key = String(nItems) + "_E" + String(encodeTime) + "_C" + String(consolTime);
         if (!(key in targetsUsed)) targetsUsed[key] = [];
 
         // Stimuli aren't saved here yet as what gets saved will depend on probe
@@ -225,7 +230,6 @@ const expt2_response = {
         screen: 'probe',
         task: taskN,
         nItems: jsPsych.timelineVariable('nStimuli'),
-        timePerItem: jsPsych.timelineVariable('timePerItem'),
         probePresent: jsPsych.timelineVariable('probePresent')
     },
     stimuli: function() {
@@ -245,6 +249,14 @@ const expt2_response = {
         trial.data.stim = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
+        data.encodeTime = gen_time(
+            jsPsych.timelineVariable('timePerItem'),
+            expt2_config.adaptiveEncode);
+
+        data.consolTime = gen_time(
+            jsPsych.timelineVariable('consolidationTime'),
+            expt2_config.adaptiveConsol);
+
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
         // Seperate out different confidence levels
