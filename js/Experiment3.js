@@ -4,9 +4,6 @@
 // stimuli will appear randomly across the trial
 // The number of stimuli will change from trial to trial (staircase?)
 // Trials will be repeated for a fixed amount of times (will this need a way to break out immediately?)
-
-let nStim = expt3_config.startingStimN;
-
 const [stimWidth, stimHeight] = expt3_config.stimulusDims;
 
 // Initialise these at the top level so they can be accessed by functions
@@ -23,6 +20,9 @@ const expt3_trial = {
     background_color: 'white',
     trial_duration: expt3_config.maxTrialLengthMs,
     stimuli: function() {
+
+        let nStim = expt3_config.startingStimN;
+        
         // Empty array to be filled and returned
         let stimArray = [];
 
@@ -45,7 +45,7 @@ const expt3_trial = {
         stimArray.push(targetStim);
 
         // Generate and display scores
-        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["correct"], 0)
+        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["correct"], 0);
 
         const scoreText = {
             obj_type: 'text',
@@ -56,7 +56,7 @@ const expt3_trial = {
             text_color: 'black',
             show_start_time: 0, // ms after the start of the trial
             show_end_time: expt3_config.maxTrialLengthMs,
-        }
+        };
         
         const highScore = {
             obj_type: 'text',
@@ -67,7 +67,7 @@ const expt3_trial = {
             text_color: 'blue',
             show_start_time: 0, // ms after the start of the trial
             show_end_time: expt3_config.maxTrialLengthMs,
-        }
+        };
         
         stimArray.push(scoreText);
         stimArray.push(highScore);
@@ -79,39 +79,39 @@ const expt3_trial = {
                 expt3_config.squareDims,
                 expt3_config.posJitterRange,
                 [100, 65]
-                )
-                
-                // Generate random start and end times
-                let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs);
-                let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs);
-                
-                var rectStim = genProtoRect();
+            );
+            
+            // Generate random start and end times
+            let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs);
+            let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs);
+            
+            var rectStim = genProtoRect();
 
-                // Update the col stimulus location
-                rectStim.startX = xPos;
-                rectStim.startY = yPos;
-                // Update the col stimulus start and end time
-                rectStim.show_start_time = startTime;
-                rectStim.show_end_time = endTime;
-                // Update the col stimulus colour
-                rectStim.fill_color = rectCols[i];
-                
-                var imgStim = genProtoImg();
+            // Update the col stimulus location
+            rectStim.startX = xPos;
+            rectStim.startY = yPos;
+            // Update the col stimulus start and end time
+            rectStim.show_start_time = startTime;
+            rectStim.show_end_time = endTime;
+            // Update the col stimulus colour
+            rectStim.fill_color = rectCols[i];
+            
+            var imgStim = genProtoImg();
 
-                // Update the img stimulus location
-                imgStim.startX = xPos;
-                imgStim.startY = yPos;
-                // Update the img stimulus start and end time
-                imgStim.show_start_time = startTime;
-                imgStim.show_end_time = endTime;
+            // Update the img stimulus location
+            imgStim.startX = xPos;
+            imgStim.startY = yPos;
+            // Update the img stimulus start and end time
+            imgStim.show_start_time = startTime;
+            imgStim.show_end_time = endTime;
 
-                // Randomly select either L or R facing image and update img stim
-                imgStim.file = (Math.random() > 0.5) ? expt3_config.stimImgs[0] : expt3_config.stimImgs[1];
-                
-                // Add rect and img to stim array
-                stimArray.push(rectStim);
-                stimArray.push(imgStim);
-            }
+            // Randomly select either L or R facing image and update img stim
+            imgStim.file = (Math.random() > 0.5) ? expt3_config.stimImgs[0] : expt3_config.stimImgs[1];
+            
+            // Add rect and img to stim array
+            stimArray.push(rectStim);
+            stimArray.push(imgStim);
+        }
 
         return stimArray
     },
@@ -119,9 +119,8 @@ const expt3_trial = {
         let x = event.offsetX;
         let y = event.offsetY;
 
-        
         // Only get info for the rect objects
-        trial = jsPsych.getCurrentTrial().stim_array.filter(obj => obj.obj_type === "rect")
+        trial = jsPsych.getCurrentTrial().stim_array.filter(obj => obj.obj_type === "rect");
 
         // Skip object at index 0 as this is the target
         for (let i = 1; i < trial.length; i++) {
@@ -205,7 +204,7 @@ const expt3_prac = {
     timeline: [],
     conditional_function: function() {
         return expt2_config.practice
-    }
+    },
 };
 
 const expt3_end = {
@@ -223,7 +222,7 @@ const expt3_proc = {
     ],
     conditional_function: function() {
         return expt3_config.run
-    }
+    },
 }
 
 mainTimeline.push(expt3_proc);

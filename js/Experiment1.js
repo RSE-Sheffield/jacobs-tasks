@@ -22,7 +22,7 @@ const e1_proto_rect_obj = {
     show_start_time: 0, // from the trial start (ms)
     show_end_time: expt1_config.stimulusDuration,
     origin_center: true,
-}
+};
 
 const stimArray = Array(expt1_config.startValue).fill(e1_proto_rect_obj)
 
@@ -34,15 +34,15 @@ const expt1_array = {
     choices: [],
     on_start: function(trial) {
 
-        let nStimuli = stimArray.length
+        let nStimuli = stimArray.length;
 
         // Before each trial randomly select some positions
-        let rectPos = jspRand.sampleWithoutReplacement(e1Pos, nStimuli)
+        let rectPos = jspRand.sampleWithoutReplacement(e1Pos, nStimuli);
 
         // Then shuffle the available colours and and split into used and unused
-        let shuffColours = jspRand.shuffle(expt1_config.colours)
-        usedCols = shuffColours.slice(0, nStimuli)
-        unusedCols = shuffColours.slice(nStimuli, )
+        let shuffColours = jspRand.shuffle(expt1_config.colours);
+        usedCols = shuffColours.slice(0, nStimuli);
+        unusedCols = shuffColours.slice(nStimuli, );
         // Used will be presented in array
         // single colour from unused will be presented when the probe
         // wasn't present in the target array
@@ -54,11 +54,11 @@ const expt1_array = {
                 expt1_config.radius,
                 expt1_config.radiusJitter,
                 expt1_config.angleJitter
-            )
-            trial.stimuli[i].startX = xPos
-            trial.stimuli[i].startY = yPos
+            );
+            trial.stimuli[i].startX = xPos;
+            trial.stimuli[i].startY = yPos;
             // Set fill colour for each stim
-            trial.stimuli[i].fill_color = usedCols[i]
+            trial.stimuli[i].fill_color = usedCols[i];
         }
     },
     canvas_width: canvas.width,
@@ -69,7 +69,7 @@ const expt1_array = {
         screen: "memory array",
         task: taskN
     },
-}
+};
 
 const expt1_probe = {
     type: jsPsychPsychophysics,
@@ -84,7 +84,7 @@ const expt1_probe = {
             probe_col = usedCols[0];
         } else {
             probe_col = unusedCols[0];
-        }        
+        };
         trial.stimuli[0].fill_color = probe_col;
         trial.stimuli[0].show_end_time = null; 
 
@@ -101,9 +101,9 @@ const expt1_probe = {
     },
     on_finish: function(data) {
 
-        let nStimuli = stimArray.length
-        data.correct = data.response == data.correct_response
-        data.nTargets = nStimuli
+        let nStimuli = stimArray.length;
+        data.correct = data.response == data.correct_response;
+        data.nTargets = nStimuli;
         
         // Update nStimuli based on staircase rules set in config file
         if (data.correct) {
@@ -111,14 +111,14 @@ const expt1_probe = {
             if (correctCount == expt1_config.staircaseUp) {
                 [correctCount, incorrectCount] = [0, 0];
                 if (nStimuli < expt1_config.maxValue) stimArray.push(e1_proto_rect_obj);
-            }
+            };
         } else {
             incorrectCount += 1;
             if (incorrectCount == expt1_config.staircaseDown) {
                 [correctCount, incorrectCount] = [0, 0];
                 if (nStimuli > expt1_config.minValue) stimArray.pop();
-            }
-        }
+            };
+        };
     },
 };
 
@@ -151,7 +151,7 @@ const expt1_prac = {
     timeline: [],
     conditional_function: function() {
         return expt1_config.practice
-    }
+    },
 };
 
 const expt1_end = {
@@ -176,7 +176,6 @@ expt1_proc = {
             const allTrials = jsPsych.data.allData.trials;
             // Get the most recent number of probe trials specified by adaptLookBack param
             const probeTrials = allTrials.filter(trial => trial.screen === "probe").slice(-expt2_config.adaptLookBack);
-            console.log(probeTrials)
             // Find the rounded average value for nTargets over those trials
             expt1_score = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nTargets"], 0) / probeTrials.length);
         }
@@ -184,6 +183,4 @@ expt1_proc = {
 };
 
 
-// TODO: Need to add a way to pass the outcome (final number of items) of this task to a later task 
-
-mainTimeline.push(expt1_proc)
+mainTimeline.push(expt1_proc);

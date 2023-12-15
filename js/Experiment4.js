@@ -6,7 +6,7 @@ let expt4_trialCombos = jsPsych.randomization.factorial({
     nStimuli: expt4_config.nStimuli,
     timePerItem: expt4_config.timePerItem,
     novelStim: expt4_config.novelStim
-})
+});
 
 // Need to generate dummy targetsUsed object for standalone version
 if (typeof(targetsUsed) === 'undefined') {
@@ -18,7 +18,7 @@ if (typeof(targetsUsed) === 'undefined') {
     var [allStims, targetsUsed] = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
 } else {
     targetsUsed = shuffleTargets(targetsUsed);
-}
+};
 
 // Generate fixation object
 var fixation_expt4 = generateFixation(
@@ -66,21 +66,21 @@ const expt4_response = {
     },
     on_start: function(trial) {
         // Get the filename without the leading dir
-        trial.data.stim = trial.stimuli[0].file.split("/").pop()
+        trial.data.stim = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
         // Seperate out different confidence levels
         if (data.responseProbeSeen === 1) {
-            data.responseConfidence = data.response % 3
+            data.responseConfidence = data.response % 3;
         } else {
             // 2nd half of confidence levels are reversed
-            data.responseConfidence = (6 - data.response) % 3
+            data.responseConfidence = (6 - data.response) % 3;
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
     },
-}
+};
 
 
 // Pull items into a single procedure
@@ -108,7 +108,7 @@ const expt4_prac = {
     timeline: [],
     conditional_function: function() {
         return expt4_config.practice
-    }
+    },
 };
 
 const expt4_end = {
@@ -126,7 +126,7 @@ const expt4_proc = {
     ],
     conditional_function: function() {
         return expt4_config.run
-    }
-}
+    },
+};
 
 mainTimeline.push(expt4_proc);

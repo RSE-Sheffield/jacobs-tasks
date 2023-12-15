@@ -1,8 +1,7 @@
-const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index))
+const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index));
 
-var usedStims;
+var usedStims, key;
 var targetsUsed = {};
-var key;
 var taskN = 2;
 
 // If we are using adaptive then use a placeholder value which will be
@@ -34,8 +33,8 @@ var fixation_expt2 = generateFixation(
 const meta_capacity = {
     type: jsPsychHtmlButtonResponse,
     on_start: function(trial) {
-        let type = jsPsych.timelineVariable('metaOptions')
-        let nStimuli = jsPsych.timelineVariable('nStimuli') + 1
+        let type = jsPsych.timelineVariable('metaOptions');
+        let nStimuli = jsPsych.timelineVariable('nStimuli') + 1;
         switch(type) {
             case "number":
                 trial.prompt = "Select your capacity";
@@ -47,8 +46,8 @@ const meta_capacity = {
                 trial.choices = letters;
                 break;
             case "delay":
-                trial.prompt = "Please wait"
-                trial.choices = []
+                trial.prompt = "Please wait";
+                trial.choices = [];
                 break
         }
     },
@@ -69,32 +68,32 @@ const meta_node = {
     timeline: [meta_capacity],
     conditional_function: function() {
         return expt2_config.metaCapacity
-    }
+    },
 };
 
 // Object for feedback
 const feedback = {
     type: jsPsychHtmlButtonResponse,
     trial_duration: expt2_config.feedbackDuration,
-    stimulus: function(){
+    stimulus: function() {
         // The feedback stimulus is a dynamic parameter because we can't know in advance whether
         // the stimulus should be 'correct' or 'incorrect'.
         // Instead, this function will check the accuracy of the last response and use that information to set
         // the stimulus value on each trial.
         if (jsPsych.timelineVariable('showFeedback')) {
             var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-            if(last_trial_correct){
+            if(last_trial_correct) {
                 return '<img src=' +expt2_config.feedbackImgs[0]+ ' width="200" height="200"><h2>Correct!</h2>'; // the parameter value has to be returned from the function
             } else {
                 return '<img src=' +expt2_config.feedbackImgs[1]+ ' width="200" height="200"><h2>Incorrect</h2>'; // the parameter value has to be returned from the function
-            }
+            };
         } else {
             return "<p></p>"
-        }
+        };
     },
     choices: [],
     data: {
-        screen: "feedback"
+        screen: "feedback",
     }
 };
 
@@ -103,7 +102,7 @@ const feedback_node = {
     timeline: [feedback],
     conditional_function: function() {
         return expt2_config.feedback
-    }
+    },
 };
 
 // Generate array of targets
@@ -122,10 +121,10 @@ const expt2_array = {
         let nStimuli = jsPsych.timelineVariable('nStimuli')
         let currStims = [];
 
-        let rectPos = jspRand.sampleWithoutReplacement(e2pos, nStimuli)
+        let rectPos = jspRand.sampleWithoutReplacement(e2pos, nStimuli);
 
-        usedStims = allStims.slice(0, nStimuli)
-        allStims = allStims.slice(nStimuli, )
+        usedStims = allStims.slice(0, nStimuli);
+        allStims = allStims.slice(nStimuli, );
 
         for (let i = 0; i < nStimuli; i++) {
             // This deep-copies the object each time else you end up with
@@ -139,17 +138,17 @@ const expt2_array = {
                 expt2_config.radiusJitter,
                 expt2_config.angleJitter,
                 expt2_config.nPos
-            )
-            stim.startX = xPos
-            stim.startY = yPos
+            );
+            stim.startX = xPos;
+            stim.startY = yPos;
 
             // Set fill colour for each stim
-            stim.file = usedStims[i]
-            currStims.push(stim)
+            stim.file = usedStims[i];
+            currStims.push(stim);
         }
         return currStims
     },
-    on_start: function(trial){
+    on_start: function(trial) {
         // Generate key for condition and add to targetsUsed dict if not
         // already there
         var nItems = jsPsych.timelineVariable('nStimuli');
@@ -163,10 +162,10 @@ const expt2_array = {
         if (expt2_config.adaptive) {
             return jsPsych.timelineVariable('nStimuli') * expt2_config.adaptiveTimes[expt1_score];
         } else {
-        return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
+            return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
         }
     },
-}
+};
 
 // Generate the response display
 const expt2_response = {
@@ -195,7 +194,6 @@ const expt2_response = {
         let probe = genProtoImg();
         const probePresent = jsPsych.timelineVariable('probePresent');
 
-        console.log(probePresent)
         if (probePresent) {
             probe.file = usedStims.pop();
         } else {
@@ -206,24 +204,24 @@ const expt2_response = {
     },
     on_start: function(trial) {
         // Get the filename without the leading dir
-        trial.data.stim = trial.stimuli[0].file.split("/").pop()
+        trial.data.stim = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
         // Seperate out different confidence levels
         if (data.responseProbeSeen === 1) {
-            data.responseConfidence = data.response % 3
+            data.responseConfidence = data.response % 3;
         } else {
             // 2nd half of confidence levels are reversed
-            data.responseConfidence = (6 - data.response) % 3
+            data.responseConfidence = (6 - data.response) % 3;
         }
         data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
         
         // Now save the images used
-        targetsUsed[key].push(...usedStims)
+        targetsUsed[key].push(...usedStims);
     },
-}
+};
 
 // Pull items into a single procedure
 const expt2_main = {
@@ -253,7 +251,7 @@ const expt2_prac = {
     timeline: [],
     conditional_function: function() {
         return expt2_config.practice
-    }
+    },
 };
 
 const expt2_end = {

@@ -38,10 +38,6 @@ function genTargetsUsedDict(trialCombos, filtVar) {
     return targetsUsed
 }
 
-function generateKey(nItems, timePerItem){
-    return String(nItems) + "_" + String(timePerItem)
-}
-
 function shuffleTargets(targets) {
     for (let key in targets){
         targets[key] = jspRand.shuffle(targets[key])
