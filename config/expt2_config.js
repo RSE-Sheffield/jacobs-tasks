@@ -9,7 +9,7 @@ var expt2_config = {
     angleJitter: [0, 0],
     fixationDuration: 500,
     fixationPostTrial: 500,
-    arrayPostTrial: 0,
+    consolidationTime: [0, 2000],
     nStimuli: [2, 6],
     timePerItem: [250, 500],
     probePresent: [true, false],

@@ -3,6 +3,7 @@ const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index)
 var usedStims, key;
 var targetsUsed = {};
 var taskN = 2;
+var stimDuration;
 
 // If we are using adaptive then use a placeholder value which will be
 // replaced by the value corresponding to  task 1 score
@@ -17,6 +18,7 @@ if ( expt2_config.adaptive ) {
 let expt2_trialCombos = jspRand.factorial({
     nStimuli: expt2_config.nStimuli,
     timePerItem: timePerItem,
+    consolidationTime: expt2_config.consolidationTime,
     probePresent: expt2_config.probePresent,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
     ...(expt2_config.feedback? {showFeedback: expt2_config.showFeedbackOptions}: {}),
@@ -119,6 +121,13 @@ const expt2_array = {
     },
     stimuli: function() {
         let nStimuli = jsPsych.timelineVariable('nStimuli')
+        let encodeTime;
+        if (expt2_config.adaptive) {
+            encodeTime = expt2_config.adaptiveTimes[expt1_score];
+        } else {
+            encodeTime = jsPsych.timelineVariable('timePerItem');
+        }
+        stimDuration = nStimuli * encodeTime;
         let currStims = [];
 
         let rectPos = jspRand.sampleWithoutReplacement(e2pos, nStimuli);
@@ -141,6 +150,7 @@ const expt2_array = {
             );
             stim.startX = xPos;
             stim.startY = yPos;
+            stim.show_end_time = stimDuration;
 
             // Set fill colour for each stim
             stim.file = usedStims[i];
@@ -152,18 +162,18 @@ const expt2_array = {
         // Generate key for condition and add to targetsUsed dict if not
         // already there
         var nItems = jsPsych.timelineVariable('nStimuli');
-        var timePerItem = jsPsych.timelineVariable('timePerItem');
-        key = String(nItems) + "_" + String(timePerItem);
+        if (expt2_config.adaptive) {
+            encodeTime = expt2_config.adaptiveTimes[expt1_score];
+        } else {
+            encodeTime = jsPsych.timelineVariable('timePerItem');
+        }
+        key = String(nItems) + "_" + String(encodeTime);
         if (!(key in targetsUsed)) targetsUsed[key] = [];
 
         // Stimuli aren't saved here yet as what gets saved will depend on probe
     },
     trial_duration: function(){
-        if (expt2_config.adaptive) {
-            return jsPsych.timelineVariable('nStimuli') * expt2_config.adaptiveTimes[expt1_score];
-        } else {
-            return jsPsych.timelineVariable('nStimuli') * jsPsych.timelineVariable('timePerItem');
-        }
+        return stimDuration + jsPsych.timelineVariable('consolidationTime')
     },
 };
 
