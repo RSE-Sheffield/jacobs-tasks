@@ -8,18 +8,6 @@ let expt4_trialCombos = jsPsych.randomization.factorial({
     novelStim: expt4_config.novelStim
 });
 
-// Need to generate dummy targetsUsed object for standalone version
-if (typeof(targetsUsed) === 'undefined') {
-    // Generate empty dict with different condition keys
-    var targetsUsed = genTargetsUsedDict(expt4_trialCombos, "novelStim");
-    // Generate shuffled list of all stims
-    var allStims = genImgList(expt4_config.nImages)
-    // Add stims to targetsUsed dict
-    var [allStims, targetsUsed] = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
-} else {
-    targetsUsed = shuffleTargets(targetsUsed);
-};
-
 // Generate fixation object
 var fixation_expt4 = generateFixation(
     expt4_config.fixationDuration,
@@ -124,6 +112,19 @@ const expt4_proc = {
         expt4_main,
         expt4_end,
     ],
+    on_timeline_start: function() {
+        // Need to generate dummy targetsUsed object for standalone version
+        if (Object.keys(targetsUsed).length === 0) {
+            // Generate empty dict with different condition keys
+            targetsUsed = genTargetsUsedDict(expt4_trialCombos, "novelStim");
+            // Generate shuffled list of all stims
+            allStims = genImgList(expt4_config.nImages)
+            // Add stims to targetsUsed dict
+            [allStims, targetsUsed] = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
+        } else {
+            targetsUsed = shuffleTargets(targetsUsed);
+        };
+    },
     conditional_function: function() {
         return expt4_config.run
     },
