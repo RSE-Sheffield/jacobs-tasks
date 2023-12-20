@@ -2,11 +2,12 @@ var key;
 var taskN = 4;
 
 // Generate all the different conditions
-let expt4_trialCombos = jsPsych.randomization.factorial({
-    nStimuli: expt4_config.nStimuli,
-    timePerItem: expt4_config.timePerItem,
-    novelStim: expt4_config.novelStim
-});
+let expt4_trialCombos = jspRand.factorial({
+    nStimuli: expt2_config.nStimuli,
+    timePerItem: encodeTime,
+    consolidationTime: consolTime,
+    novel_probe: expt4_config.novelProbe
+})
 
 // Generate fixation object
 var fixation_expt4 = generateFixation(
@@ -34,19 +35,27 @@ const expt4_response = {
     data: {
         screen: 'probe',
         task: taskN,
-        nItems: jsPsych.timelineVariable('nStimuli'),
-        timePerItem: jsPsych.timelineVariable('timePerItem'),
-        novelStim: jsPsych.timelineVariable('novelStim')
+        novel_probe: jsPsych.timelineVariable('novel_probe')
     },
     stimuli: function() {
         let probe = genProtoImg();
-        const novelStim = jsPsych.timelineVariable('novelStim');
-        if (novelStim) {
+        const novel_probe = jsPsych.timelineVariable('novel_probe');
+        if (novel_probe) {
             probe.file = allStims.pop();
         } else {
             const nItems = jsPsych.timelineVariable('nStimuli');
-            const  timePerItem = jsPsych.timelineVariable('timePerItem');
-            let key = String(nItems) + "_" + String(timePerItem);
+
+            let encodeTime = gen_time(
+                jsPsych.timelineVariable('timePerItem'),
+                expt2_config.adaptiveEncode
+            );
+
+            let consolTime = gen_time(
+                jsPsych.timelineVariable('consolidationTime'),
+                expt2_config.adaptiveConsol
+            );
+
+            let key = String(nItems) + "_E" + String(encodeTime) + "_C" + String(consolTime);
 
             probe.file = targetsUsed[key].pop();
         }
@@ -57,6 +66,21 @@ const expt4_response = {
         trial.data.stim = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
+
+        if (!jsPsych.timelineVariable('novel_probe')) {
+            data.nItems = jsPsych.timelineVariable('nStimuli');
+
+            data.encode_time = gen_time(
+                jsPsych.timelineVariable('timePerItem'),
+                expt2_config.adaptiveEncode
+            );
+
+            data.consol_time = gen_time(
+                jsPsych.timelineVariable('consolidationTime'),
+                expt2_config.adaptiveConsol
+            );
+        };
+
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
         data.responseProbeSeen = data.response < 3;
         // Seperate out different confidence levels
@@ -116,7 +140,7 @@ const expt4_proc = {
         // Need to generate dummy targetsUsed object for standalone version
         if (Object.keys(targetsUsed).length === 0) {
             // Generate empty dict with different condition keys
-            targetsUsed = genTargetsUsedDict(expt4_trialCombos, "novelStim");
+            targetsUsed = genTargetsUsedDict(expt4_trialCombos, "novel_probe");
             // Generate shuffled list of all stims
             allStims = genImgList(expt4_config.nImages)
             // Add stims to targetsUsed dict

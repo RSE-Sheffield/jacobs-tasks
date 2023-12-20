@@ -71,3 +71,24 @@ function genProtoRect() {
         origin_center: true,
     };
 }
+
+function gen_time(timelineVar, adaptiveProps) {
+    // If we're using adaptive times
+    if (adaptiveProps.use) {
+        // See what type of trial we have
+        trialType = timelineVar
+        if (trialType === "adapt") {
+            // If it's adaptive then get the time value from the
+            // adaptiveTimes object
+            return adaptiveProps.adaptTimes[expt1_score];
+        } else if (trialType === "reg") {
+            // If it's a 'regular' trial then get the time value from
+            // the config
+            return adaptiveProps.regTime;
+        }
+    } else {
+        // If we're not using adaptive times then just get the supplied 
+        // time value
+        return timelineVar;
+    }
+};
