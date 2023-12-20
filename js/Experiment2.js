@@ -23,7 +23,7 @@ let expt2_trialCombos = jspRand.factorial({
     nStimuli: expt2_config.nStimuli,
     timePerItem: encodeTime,
     consolidationTime: consolTime,
-    probePresent: expt2_config.probePresent,
+    novel_probe: expt2_config.novelProbe,
     ...(expt2_config.metaCapacity? {metaOptions: expt2_config.metaOptions}: {}),
     ...(expt2_config.feedback? {showFeedback: expt2_config.showFeedbackOptions}: {}),
 })
@@ -230,13 +230,13 @@ const expt2_response = {
         screen: 'probe',
         task: taskN,
         nItems: jsPsych.timelineVariable('nStimuli'),
-        probePresent: jsPsych.timelineVariable('probePresent')
+        novel_probe: jsPsych.timelineVariable('novel_probe')
     },
     stimuli: function() {
         let probe = genProtoImg();
-        const probePresent = jsPsych.timelineVariable('probePresent');
+        const novel_probe = jsPsych.timelineVariable('novel_probe');
 
-        if (probePresent) {
+        if (novel_probe) {
             probe.file = usedStims.pop();
         } else {
             probe.file = allStims.pop();
@@ -246,27 +246,27 @@ const expt2_response = {
     },
     on_start: function(trial) {
         // Get the filename without the leading dir
-        trial.data.stim = trial.stimuli[0].file.split("/").pop();
+        trial.data.stimulus = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
-        data.encodeTime = gen_time(
+        data.encode_time = gen_time(
             jsPsych.timelineVariable('timePerItem'),
             expt2_config.adaptiveEncode);
 
-        data.consolTime = gen_time(
+        data.consol_time = gen_time(
             jsPsych.timelineVariable('consolidationTime'),
             expt2_config.adaptiveConsol);
 
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
-        data.responseProbeSeen = data.response < 3;
+        data.probe_seen = data.response < 3;
         // Seperate out different confidence levels
-        if (data.responseProbeSeen === 1) {
+        if (data.probe_seen === 1) {
             data.responseConfidence = data.response % 3;
         } else {
             // 2nd half of confidence levels are reversed
             data.responseConfidence = (6 - data.response) % 3;
         }
-        data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
+        data.correct = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
         
         // Now save the images used
         targetsUsed[key].push(...usedStims);

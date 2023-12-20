@@ -63,7 +63,7 @@ const expt4_response = {
     },
     on_start: function(trial) {
         // Get the filename without the leading dir
-        trial.data.stim = trial.stimuli[0].file.split("/").pop();
+        trial.data.stimulus = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
 
@@ -82,15 +82,15 @@ const expt4_response = {
         };
 
         // 'Yes' is one of the 1st 3 buttons (differing confidence levels)
-        data.responseProbeSeen = data.response < 3;
+        data.probe_seen = data.response < 3;
         // Seperate out different confidence levels
-        if (data.responseProbeSeen === 1) {
+        if (data.probe_seen === 1) {
             data.responseConfidence = data.response % 3;
         } else {
             // 2nd half of confidence levels are reversed
             data.responseConfidence = (6 - data.response) % 3;
         }
-        data.correct = ((data.probePresent & data.responseProbeSeen) | (!data.probePresent & !data.responseProbeSeen));
+        data.correct = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
     },
 };
 

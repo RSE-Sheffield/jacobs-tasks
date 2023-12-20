@@ -7,7 +7,8 @@ var expt4_config = {
     arrayPostTrial: 0,
     nStimuli: [2, 6],
     timePerItem: [250, 500],
-    novelStim: [true, false],
+    consolidationTime: [0], 
+    novelProbe: [true, false],
     nTrialReps: 1,
     responseOptions: [
         "Yes - Sure",

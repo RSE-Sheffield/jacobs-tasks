@@ -12,7 +12,7 @@ var expt2_config = {
     consolidationTime: [0, 2000],
     nStimuli: [2, 6],
     timePerItem: [250, 500],
-    probePresent: [true, false],
+    novelProbe: [true, false],
     nTrialReps: 1,
     responseOptions: [
         "Yes - Sure",

@@ -80,7 +80,7 @@ const expt1_probe = {
     horiz_button_margin: "40px",
     vert_button_margin: "20px",
     on_start: function(trial) {
-        if (jsPsych.timelineVariable('probe_present')) {
+        if (jsPsych.timelineVariable('novel_probe')) {
             probe_col = usedCols[0];
         } else {
             probe_col = unusedCols[0];
@@ -96,14 +96,14 @@ const expt1_probe = {
     data: {
         screen: "probe",
         task: taskN,
-        probe_present: jsPsych.timelineVariable('probe_present'),
-        correct_response: jsPsych.timelineVariable('correct_response'),
+        novel_probe: jsPsych.timelineVariable('novel_probe'),
+        expected_response: jsPsych.timelineVariable('expected_response'),
     },
     on_finish: function(data) {
 
         let nStimuli = stimArray.length;
-        data.correct = data.response == data.correct_response;
-        data.nTargets = nStimuli;
+        data.correct = data.response == data.expected_response;
+        data.nItems = nStimuli;
         
         // Update nStimuli based on staircase rules set in config file
         if (data.correct) {
@@ -132,8 +132,8 @@ const expt1_main = {
         expt1_probe
     ],
     timeline_variables: [
-        {probe_present: true, correct_response: 0},
-        {probe_present: false, correct_response: 1}
+        {novel_probe: true, expected_response: 0},
+        {novel_probe: false, expected_response: 1}
     ],
     sample: {
         type: 'fixed-repetitions',
@@ -176,7 +176,7 @@ expt1_proc = {
         // Get the most recent number of probe trials specified by adaptLookBack param
         const probeTrials = allTrials.filter(trial => trial.screen === "probe").slice(-expt2_config.adaptLookBack);
         // Find the rounded average value for nTargets over those trials
-        expt1_score = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nTargets"], 0) / probeTrials.length);
+        expt1_score = Math.round(probeTrials.reduce((sum, obj) => sum + obj["nItems"], 0) / probeTrials.length);
     }
 };
 
