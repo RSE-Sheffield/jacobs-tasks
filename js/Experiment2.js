@@ -163,7 +163,7 @@ const expt2_array = {
         for (let i = 0; i < nStimuli; i++) {
             // This deep-copies the object each time else you end up with
             // the same properties for all objects
-            stim = genProtoImg();
+            stim = genProtoImg(...expt2_config.stimulusDims);
             
             // Generate and set x and y positions for each stim
             var [xPos, yPos] = generatePosCircle(
@@ -233,7 +233,7 @@ const expt2_response = {
         novel_probe: jsPsych.timelineVariable('novel_probe')
     },
     stimuli: function() {
-        let probe = genProtoImg();
+        let probe = genProtoImg(...expt2_config.stimulusDims);
         const novel_probe = jsPsych.timelineVariable('novel_probe');
 
         if (novel_probe) {

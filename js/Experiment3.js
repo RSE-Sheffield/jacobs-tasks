@@ -35,10 +35,8 @@ const expt3_trial = {
         let rectPos = jspRand.sampleWithoutReplacement(expt3_config.allPostions, nStim);
 
         // This sets up the target bar across the bottom of the canvas
-        let targetStim = genProtoRect();
+        let targetStim = genProtoRect(800, 20);
 
-        targetStim.width = 800;
-        targetStim.height = 20;
         targetStim.fill_color = targetColour;
         targetStim.show_start_time = 0;
         targetStim.show_end_time = expt3_config.maxTrialLengthMs;
@@ -85,7 +83,7 @@ const expt3_trial = {
             let startTime = jspRand.randomInt(...expt3_config.startTimeRangeMs);
             let endTime = startTime + jspRand.randomInt(...expt3_config.durationRangeMs);
             
-            var rectStim = genProtoRect();
+            var rectStim = genProtoRect(...expt3_config.rectDims);
 
             // Update the col stimulus location
             rectStim.startX = xPos;
@@ -96,7 +94,7 @@ const expt3_trial = {
             // Update the col stimulus colour
             rectStim.fill_color = rectCols[i];
             
-            var imgStim = genProtoImg();
+            var imgStim = genProtoImg(...expt3_config.stimulusDims);
 
             // Update the img stimulus location
             imgStim.startX = xPos;

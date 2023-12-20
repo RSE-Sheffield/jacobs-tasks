@@ -10,6 +10,7 @@ var expt2_config = {
     fixationDuration: 500,
     fixationPostTrial: 500,
     consolidationTime: [0, 2000],
+    stimulusDims: [96, 96],
     nStimuli: [2, 6],
     timePerItem: [250, 500],
     novelProbe: [true, false],

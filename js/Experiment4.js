@@ -38,7 +38,7 @@ const expt4_response = {
         novel_probe: jsPsych.timelineVariable('novel_probe')
     },
     stimuli: function() {
-        let probe = genProtoImg();
+        let probe = genProtoImg(...expt4_config.stimulusDims);
         const novel_probe = jsPsych.timelineVariable('novel_probe');
         if (novel_probe) {
             probe.file = allStims.pop();

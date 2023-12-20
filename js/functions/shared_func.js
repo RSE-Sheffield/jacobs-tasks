@@ -45,28 +45,27 @@ function shuffleTargets(targets) {
     return targets
 }
 
-function genProtoImg() {
+function genProtoImg(width, height) {
     // prototype stimulus object
     return proto_img_obj = {
         obj_type: 'image',
         file: allStims[0],
         startX: 0,
         startY: 0,
-        width: imgSize[0],
-        height: imgSize[1],
+        width: width,
+        height: height,
         origin_center: true,
     }
 }
 
-function genProtoRect() {
+function genProtoRect(width, height) {
     // prototype rect object
     return e3_proto_rect_obj = {
         obj_type: 'rect',
         startX: 0,
         startY: 275,
-        width: stimWidth,
-        height: stimHeight,
-        line_color: 'black',
+        width: width,
+        height: height,
         fill_color: 'black',
         origin_center: true,
     };

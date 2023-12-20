@@ -5,6 +5,7 @@ var expt4_config = {
     fixationDuration: 500,
     fixationPostTrial: 500,
     arrayPostTrial: 0,
+    stimulusDims: [96, 96],
     nStimuli: [2, 6],
     timePerItem: [250, 500],
     consolidationTime: [0], 
