@@ -62,7 +62,7 @@ const meta_capacity = {
     prompt: "",
     trial_duration: expt2_config.metaDuration,
     response_ends_trial: false,
-    button_html: '<button class="jspsych-btn colour-btn">%choice%</button>',
+    button_html: '<button class="jspsych-btn">%choice%</button>',
     data: {
         screen: "meta"
     }
@@ -216,12 +216,12 @@ const expt2_response = {
     response_type: "button",
     button_choices: expt2_config.responseOptions,
     button_html: [
-        '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-yes">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
-        '<button class="jspsych-btn colour-btn colour-btn-no">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-yes">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-yes">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-yes">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-no">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-no">%choice%</button>',
+        '<button class="jspsych-btn colour-btn-no">%choice%</button>',
     ],
     canvas_width: canvas.width,
     canvas_height: canvas.height,
