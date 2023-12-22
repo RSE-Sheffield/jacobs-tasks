@@ -1,36 +1,67 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <script src="js/jspsych/jspsych.js"></script>
-    <script src="js/jspsych/plugin-canvas-button-response.js"></script>
-    <script src="js/jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="js/jspsych-psychophysics-3.6.0/jspsych-psychophysics.js"></script>
+    <script src="js/jspsych/plugin-preload.js"></script>
+    <script src="js/jspsych/plugin-html-button-response.js"></script>
+    <script src="js/jspsych/plugin-instructions.js"></script>
     <script src="js/jspsych/plugin-call-function.js"></script>
+    <script src="js/jspsych/plugin-survey-text.js"></script>
+
     <script src="js/functions/shared_func.js"></script>
-    <script src="js/functions/expt1_func.js"></script>
-    <script src="js/functions/expt2_func.js"></script>
+    <script src="js/functions/image_func.js"></script>
+    <script src="js/functions/position_func.js"></script>
     <script src="config/expt1_config.js"></script>
     <script src="config/expt2_config.js"></script>
-    
+    <script src="config/expt3_config.js"></script>
+    <script src="config/expt4_config.js"></script>
+    <script src="config/instructions.js"></script>
+
+
     <link href="js/jspsych/jspsych.css" rel="stylesheet" type="text/css" />
     <link href="css/custom-style.css" rel="stylesheet" type="text/css" />
-</head>
+  </head>
 
-<body>
-  <canvas id="canvas" width="600" height="600"></canvas>
+  <body>
+    <canvas id="canvas" width="800" height="600">
+    </canvas>
+    
+    <script>
+      const jsPsych = initJsPsych();
+      
+      var jspRand = jsPsych.randomization
+      var identifier = jspRand.randomID(10);
 
-  <script>
-    const jsPsych = initJsPsych();
-    const canvas = document.getElementById("canvas");
-    const mainTimeline = [];
-    var jspShuffle = jsPsych.randomization.shuffle
-  </script>
-  <script src="js/Experiment1.js"></script>
-  <script src="js/Experiment2.js"></script>
-  <script>
-    jsPsych.run(mainTimeline)
-  </script>
+      const enter_ID = {
+        type: jsPsychSurveyText,
+        questions: [
+          {
+            prompt: "Please enter the participant ID",
+            required: true,
+            name: "ID"
+          }
+        ],
+        on_load: function() {
+          document.getElementById("input-0").value = identifier; 
+        }
+      }
+      
+      const canvas = document.getElementById("canvas");
+      const imgSize = [96, 96];
+      const mainTimeline = [];
 
-</body>
+      mainTimeline.push(enter_ID)
+    </script>
+    <script src="js/preloadImgs.js"></script>
+    <script src="js/Experiment1.js"></script>
+    <script src="js/Experiment2.js"></script>
+    <script src="js/Experiment3.js"></script>
+    <script src="js/Experiment4.js"></script>
+    <script>
+      jsPsych.run(mainTimeline)
+    </script>
+
+  </body>
 
 </html>
