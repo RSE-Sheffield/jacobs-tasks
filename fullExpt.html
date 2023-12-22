@@ -7,6 +7,7 @@
     <script src="js/jspsych/plugin-html-button-response.js"></script>
     <script src="js/jspsych/plugin-instructions.js"></script>
     <script src="js/jspsych/plugin-call-function.js"></script>
+    <script src="js/jspsych/plugin-survey-text.js"></script>
 
     <script src="js/functions/shared_func.js"></script>
     <script src="js/functions/image_func.js"></script>
@@ -30,15 +31,36 @@
       const jsPsych = initJsPsych({
         on_finish: function() {
           const d = new Date();
-          var filename = d.toISOString() + "_allExpt_testdata.csv"
+          const ID = jsPsych.data.get().
+            filter({trial_type: 'survey-text'}).
+            select("response").
+            values[0].ID;
+          var filename = ID + "_" + d.toISOString() + "_allExptdata.csv";
           jsPsych.data.get().localSave('csv', filename);
         }
       });
+      var jspRand = jsPsych.randomization
+      var identifier = jspRand.randomID(10);
+
+      const enter_ID = {
+        type: jsPsychSurveyText,
+        questions: [
+          {
+            prompt: "Please enter the participant ID",
+            required: true,
+            name: "ID"
+          }
+        ],
+        on_load: function() {
+          document.getElementById("input-0").value = identifier; 
+        }
+      }
       
       const canvas = document.getElementById("canvas");
       const imgSize = [96, 96];
       const mainTimeline = [];
-      var jspRand = jsPsych.randomization
+
+      mainTimeline.push(enter_ID)
     </script>
     <script src="js/preloadImgs.js"></script>
     <script src="js/Experiment1.js"></script>
