@@ -1,4 +1,4 @@
-const e2pos = Array.from({length: expt2_config.nPos}, (_value, index) => (index));
+const e2pos = Array.from({length: expt2_config.nPositions}, (_value, index) => (index));
 
 var usedStims, key;
 var targetsUsed = {};
@@ -111,27 +111,6 @@ const feedback_node = {
     },
 };
 
-function gen_time(timelineVar, adaptiveProps) {
-    // If we're using adaptive times
-    if (adaptiveProps.use) {
-        // See what type of trial we have
-        trialType = timelineVar
-        if (trialType === "adapt") {
-            // If it's adaptive then get the time value from the
-            // adaptiveTimes object
-            return adaptiveProps.adaptTimes[expt1_score];
-        } else if (trialType === "reg") {
-            // If it's a regular trial then get the  time value from
-            // the config
-            return adaptiveProps.regTime;
-        }
-    } else {
-        // If we're not using adaptive times then just get the supplied 
-        // time value
-        return timelineVar;
-    }
-};
-
 // Generate array of targets
 const expt2_array = {
     type: jsPsychPsychophysics,
@@ -147,7 +126,7 @@ const expt2_array = {
     stimuli: function() {
         let nStimuli = jsPsych.timelineVariable('nStimuli')
 
-        let encodeTime = gen_time(
+        let encodeTime = genTime(
             jsPsych.timelineVariable('timePerItem'),
             expt2_config.adaptiveEncode);
 
@@ -171,7 +150,7 @@ const expt2_array = {
                 expt2_config.radius,
                 expt2_config.radiusJitter,
                 expt2_config.angleJitter,
-                expt2_config.nPos
+                expt2_config.nPositions
             );
             stim.startX = xPos;
             stim.startY = yPos;
@@ -188,11 +167,11 @@ const expt2_array = {
         // already there
         var nItems = jsPsych.timelineVariable('nStimuli');
 
-        let encodeTime = gen_time(
+        let encodeTime = genTime(
             jsPsych.timelineVariable('timePerItem'),
             expt2_config.adaptiveEncode);
 
-        let consolTime = gen_time(
+        let consolTime = genTime(
             jsPsych.timelineVariable('consolidationTime'),
             expt2_config.adaptiveConsol);
         
@@ -202,7 +181,7 @@ const expt2_array = {
         // Stimuli aren't saved here yet as what gets saved will depend on probe
     },
     trial_duration: function(){
-        let consolTime = gen_time(
+        let consolTime = genTime(
             jsPsych.timelineVariable('consolidationTime'),
             expt2_config.adaptiveConsol);
 
@@ -249,11 +228,11 @@ const expt2_response = {
         trial.data.stimulus = trial.stimuli[0].file.split("/").pop();
     },
     on_finish: function(data) {
-        data.encode_time = gen_time(
+        data.encode_time = genTime(
             jsPsych.timelineVariable('timePerItem'),
             expt2_config.adaptiveEncode);
 
-        data.consol_time = gen_time(
+        data.consol_time = genTime(
             jsPsych.timelineVariable('consolidationTime'),
             expt2_config.adaptiveConsol);
 
