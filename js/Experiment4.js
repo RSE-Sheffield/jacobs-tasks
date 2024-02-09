@@ -41,16 +41,17 @@ const expt4_response = {
         let probe = genProtoImg(...expt4_config.stimulusDims);
         const novel_probe = jsPsych.timelineVariable('novel_probe');
         if (novel_probe) {
+            console.log(allStims)
             probe.file = allStims.pop();
         } else {
             const nItems = jsPsych.timelineVariable('nStimuli');
 
-            let encodeTime = gen_time(
+            let encodeTime = genTime(
                 jsPsych.timelineVariable('timePerItem'),
                 expt2_config.adaptiveEncode
             );
 
-            let consolTime = gen_time(
+            let consolTime = genTime(
                 jsPsych.timelineVariable('consolidationTime'),
                 expt2_config.adaptiveConsol
             );
@@ -70,12 +71,12 @@ const expt4_response = {
         if (!jsPsych.timelineVariable('novel_probe')) {
             data.nItems = jsPsych.timelineVariable('nStimuli');
 
-            data.encode_time = gen_time(
+            data.encode_time = genTime(
                 jsPsych.timelineVariable('timePerItem'),
                 expt2_config.adaptiveEncode
             );
 
-            data.consol_time = gen_time(
+            data.consol_time = genTime(
                 jsPsych.timelineVariable('consolidationTime'),
                 expt2_config.adaptiveConsol
             );
@@ -137,6 +138,7 @@ const expt4_proc = {
         expt4_end,
     ],
     on_timeline_start: function() {
+        console.log(Object.keys(targetsUsed).length)
         // Need to generate dummy targetsUsed object for standalone version
         if (Object.keys(targetsUsed).length === 0) {
             // Generate empty dict with different condition keys
@@ -144,7 +146,9 @@ const expt4_proc = {
             // Generate shuffled list of all stims
             allStims = genImgList(expt4_config.nImages)
             // Add stims to targetsUsed dict
-            [allStims, targetsUsed] = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
+            allTargets = generateTargets(allStims, targetsUsed, expt4_config.nTrialReps);
+            allStims = allTargets[0];
+            targetsUsed = allTargets[1];
         } else {
             targetsUsed = shuffleTargets(targetsUsed);
         };
