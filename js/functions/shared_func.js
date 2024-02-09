@@ -32,7 +32,7 @@ var cursor_on = {
 function genTargetsUsedDict(trialCombos, filtVar) {
     let targetsUsed = {}
     let filt_combos = trialCombos.filter(item => item[filtVar] == true);
-    let keyArr = filt_combos.map(el => `${el.nStimuli}_${el.timePerItem}`);
+    let keyArr = filt_combos.map(el => `${el.nStimuli}_E${el.timePerItem}_C${el.consolidationTime}`);
     keyArr.forEach(el => {targetsUsed[el] = []});
 
     return targetsUsed
@@ -71,7 +71,7 @@ function genProtoRect(width, height) {
     };
 }
 
-function gen_time(timelineVar, adaptiveProps) {
+function genTime(timelineVar, adaptiveProps) {
     // If we're using adaptive times
     if (adaptiveProps.use) {
         // See what type of trial we have
