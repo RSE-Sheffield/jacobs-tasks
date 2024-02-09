@@ -1,15 +1,10 @@
 var expt4_config = {
     run: true,
-    practice: true,
-    nImages: 414,              // Total number of images available (only use to generate dummy runs)
+    practice: false,
     fixationDuration: 500,
     fixationPostTrial: 500,
     arrayPostTrial: 0,
     stimulusDims: [96, 96],
-    nStimuli: [2, 6],
-    timePerItem: [250, 500],
-    consolidationTime: [0], 
-    novelProbe: [true, false],
     nTrialReps: 1,
     responseOptions: [
         "Yes - Sure",
