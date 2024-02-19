@@ -1,6 +1,6 @@
 var expt1_config = {
     run: true,
-    practice: true,
+    practice: false,
     fixationDuration: 250,              // Fixation duration in ms
     fixationPostTrial: 0,               // Duration of blank screen after fixation (in ms) 
     stimulusDuration: 1500,             // Stimulus duration in ms

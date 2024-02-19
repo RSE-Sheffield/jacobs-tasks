@@ -1,6 +1,6 @@
 var expt2_config = {
     run: true,
-    practice: true,
+    practice: false,
     nImages: 414,              // Total number of images available
     nPracImages: 40,
     nPos: 8,
