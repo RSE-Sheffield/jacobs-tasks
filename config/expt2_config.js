@@ -3,7 +3,7 @@ var expt2_config = {
     practice: false,
     nImages: 414,              // Total number of images available
     nPracImages: 40,
-    nPos: 8,
+    nPositions: 8,
     radius: 250,
     radiusJitter: [0, 0],
     angleJitter: [0, 0],
@@ -34,7 +34,7 @@ var expt2_config = {
 
     // Section for adaptive tasks
     adaptiveEncode: {
-        use: true,
+        use: false,
         regTime: 500,
         adaptTimes: {
             2: 700,
