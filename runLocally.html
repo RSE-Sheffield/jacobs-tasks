@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Load in the required jsPsych library and plugins-->
     <script src="js/jspsych/jspsych.js"></script>
     <script src="js/jspsych-psychophysics-3.6.0/jspsych-psychophysics.js"></script>
     <script src="js/jspsych/plugin-preload.js"></script>
@@ -9,6 +10,8 @@
     <script src="js/jspsych/plugin-call-function.js"></script>
     <script src="js/jspsych/plugin-survey-text.js"></script>
 
+    <!-- Load in additional functions, instructions,
+      and the experiment configs -->
     <script src="js/functions/shared_func.js"></script>
     <script src="js/functions/image_func.js"></script>
     <script src="js/functions/position_func.js"></script>
@@ -18,29 +21,30 @@
     <script src="config/expt4_config.js"></script>
     <script src="config/instructions.js"></script>
 
-
+    <!-- Load in the CSS -->
     <link href="js/jspsych/jspsych.css" rel="stylesheet" type="text/css" />
     <link href="css/custom-style.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <canvas id="canvas" width="800" height="600">
-    </canvas>
-    
+    <canvas id="canvas" width="800" height="600"></canvas>
     <script>
+
       const jsPsych = initJsPsych({
         on_finish: function() {
+          // When the experiment is done generate a filename based on 
+          // Particpant ID and date, then save the data locally as a csv file
           const d = new Date();
+          const dateString = d.toISOString().split(".")[0].replaceAll(":", "");
           const ID = jsPsych.data.get().
             filter({trial_type: 'survey-text'}).
             select("response").
             values[0].ID;
-          var filename = ID + "_" + d.toISOString() + "_allExptdata.csv";
+          var filename = ID + "_" + dateString + ".csv";
           jsPsych.data.get().localSave('csv', filename);
         }
       });
       var jspRand = jsPsych.randomization
-      var identifier = jspRand.randomID(10);
 
       const enter_ID = {
         type: jsPsychSurveyText,
@@ -50,10 +54,7 @@
             required: true,
             name: "ID"
           }
-        ],
-        on_load: function() {
-          document.getElementById("input-0").value = identifier; 
-        }
+        ]
       }
       
       const canvas = document.getElementById("canvas");
@@ -68,6 +69,15 @@
     <script src="js/Experiment3.js"></script>
     <script src="js/Experiment4.js"></script>
     <script>
+
+      var expt_complete = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<p>All Done</p>',
+        choices: "",
+        trial_duration: 1500,
+      } 
+      mainTimeline.push(expt_complete);
+
       jsPsych.run(mainTimeline)
     </script>
 
