@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/jspsych/jspsych.js"></script>
+    <script src="js/jspsych-psychophysics-3.6.0/jspsych-psychophysics.js"></script>
+    <script src="js/jspsych/plugin-preload.js"></script>
+    <script src="js/jspsych/plugin-html-button-response.js"></script>
+    <script src="js/jspsych/plugin-instructions.js"></script>
+    <script src="js/jspsych/plugin-call-function.js"></script>
+    <script src="js/jspsych/plugin-survey-text.js"></script>
+
+    <script type="text/javascript" src="lib/jspsych-7-pavlovia-2022.1.1.js"></script>
+
+    <script src="js/functions/shared_func.js"></script>
+    <script src="js/functions/image_func.js"></script>
+    <script src="js/functions/position_func.js"></script>
+    <script src="config/expt1_config.js"></script>
+    <script src="config/expt2_config.js"></script>
+    <script src="config/expt3_config.js"></script>
+    <script src="config/expt4_config.js"></script>
+    <script src="config/instructions.js"></script>
+
+
+    <link href="js/jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+    <link href="css/custom-style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+
+      const jsPsych = initJsPsych();
+      var jspRand = jsPsych.randomization
+
+      var pavloviaInfo;
+
+      var pavlovia_init = {
+        type: jsPsychPavlovia,
+        command: "init",
+        // Store info received by Pavlovia init into the global variable `pavloviaInfo`
+        setPavloviaInfo: function(info) {
+          console.log(info);
+          pavloviaInfo = info;
+        }
+      };
+
+      const enter_ID = {
+        type: jsPsychSurveyText,
+        questions: [
+          {
+            prompt: "Please enter the participant ID",
+            required: true,
+            name: "ID"
+          }
+        ],
+        on_load: function() {
+          document.getElementById("input-0").value = identifier; 
+        }
+      }
+      
+      const canvas = document.getElementById("canvas");
+      const imgSize = [96, 96];
+      const mainTimeline = [];
+
+      mainTimeline.push(pavlovia_init)
+      mainTimeline.push(enter_ID)
+    </script>
+    <script src="js/preloadImgs.js"></script>
+    <script src="js/Experiment1.js"></script>
+    <script src="js/Experiment2.js"></script>
+    <script src="js/Experiment3.js"></script>
+    <script src="js/Experiment4.js"></script>
+    <script>
+      var pavlovia_finish = {
+        type: jsPsychPavlovia,
+        command: "finish",
+        participantId: function() {
+          return jsPsych.data.get().
+            filter({trial_type: 'survey-text'}).
+            select("response").
+            values[0].ID;
+        },
+      };
+      mainTimeline.push(pavlovia_finish);
+      
+      var expt_complete = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<p>All Done</p>',
+        choices: "",
+        trial_duration: 1500,
+      } 
+      mainTimeline.push(expt_complete);
+
+      jsPsych.run(mainTimeline)
+    </script>
+
+  </body>
+
+</html>
