@@ -97,10 +97,14 @@
         type: jsPsychPavlovia,
         command: "finish",
         participantId: function() {
-          return jsPsych.data.get().
-            filter({trial_type: 'survey-text'}).
-            select("response").
-            values[0].ID;
+          if (prolific_id !== undefined) {
+            return prolific_id
+          } else {
+            return jsPsych.data.get().
+              filter({trial_type: 'survey-text'}).
+              select("response").
+              values[0].ID;
+          }
         },
       };
       mainTimeline.push(pavlovia_finish);
