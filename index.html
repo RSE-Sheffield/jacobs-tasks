@@ -14,6 +14,7 @@
     <script src="js/functions/shared_func.js"></script>
     <script src="js/functions/image_func.js"></script>
     <script src="js/functions/position_func.js"></script>
+    <script src="config/prolific_config.js"></script>
     <script src="config/expt1_config.js"></script>
     <script src="config/expt2_config.js"></script>
     <script src="config/expt3_config.js"></script>
@@ -29,13 +30,31 @@
     <canvas id="canvas" width="800" height="600"></canvas>
     <script>
 
-      const jsPsych = initJsPsych();
-      var jspRand = jsPsych.randomization
+      const jsPsych = initJsPsych({
+        on_finish: function(){
 
+          let completeCode = prolific_config["completeCode"]
+          if (completeCode !== undefined | completeCode !== "") {
+            window.location = `https://app.prolific.co/submissions/complete?cc=${completeCode}`
+          }
+        }
+      });
+      var jspRand = jsPsych.randomization
       var pavloviaInfo;
       const canvas = document.getElementById("canvas");
       const imgSize = [96, 96];
       const mainTimeline = [];
+
+      // capture info from Prolific
+      var prolific_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+      var study_id = jsPsych.data.getURLVariable('STUDY_ID');
+      var session_id = jsPsych.data.getURLVariable('SESSION_ID');
+
+      jsPsych.data.addProperties({
+        prolific_id: prolific_id,
+        study_id: study_id,
+        session_id: session_id
+      });
 
       var pavlovia_init = {
         type: jsPsychPavlovia,
