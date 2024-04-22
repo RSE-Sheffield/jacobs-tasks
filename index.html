@@ -55,7 +55,7 @@
         study_id: study_id,
         session_id: session_id
       });
-
+      
       var pavlovia_init = {
         type: jsPsychPavlovia,
         command: "init",
@@ -75,13 +75,17 @@
             name: "ID"
           }
         ],
-        on_load: function() {
-          document.getElementById("input-0").value = identifier; 
+      }
+
+      const enter_ID_node = {
+        timeline: [enter_ID],
+        conditional_function: function() {
+            return prolific_id === undefined
         }
       }
 
       mainTimeline.push(pavlovia_init)
-      mainTimeline.push(enter_ID)
+      mainTimeline.push(enter_ID_node)
     </script>
     <script src="js/preloadImgs.js"></script>
     <script src="js/Experiment1.js"></script>
