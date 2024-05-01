@@ -245,7 +245,7 @@ const expt2_response = {
             // 2nd half of confidence levels are reversed
             data.response_confidence = (5 - data.response) % 3;
         }
-        data.correct = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
+        data.accuracy = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
         
         // Now save the images used
         targetsUsed[key].push(...usedStims);

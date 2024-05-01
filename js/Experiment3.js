@@ -144,13 +144,13 @@ const expt3_trial = {
         data.response = clickedColour;
         if (clickedColour === "") {
             // No Response
-            data.correct = 0;
+            data.accuracy = 0;
         } else if (clickedColour === targetColour) {
             // Correct response
-            data.correct = 1;
+            data.accuracy = 1;
         } else {
             // Incorrect response
-            data.correct = -1;
+            data.accuracy = -1;
         }
         clickedColour = "";
     },
