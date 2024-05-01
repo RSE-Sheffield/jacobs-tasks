@@ -117,6 +117,22 @@
       } 
       mainTimeline.push(expt_complete);
 
+      var redirect_prolific = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: '<p>Redirecting back to Prolific</p><p>If you see a pop-up asking if you are sure you want to leave the page be sure to press the "Leave Page" button</p>',
+        choices: ["Continue"],
+        trial_duration: 5000,
+      } 
+      
+      const redirect_prolific_node = {
+        timeline: [redirect_prolific],
+        conditional_function: function() {
+          return completeCode !== undefined | completeCode !== ""
+        }
+      }
+      
+      mainTimeline.push(redirect_prolific_node);
+      
       jsPsych.run(mainTimeline)
     </script>
 
