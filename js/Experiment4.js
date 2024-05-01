@@ -90,6 +90,7 @@ const expt4_response = {
             // 2nd half of confidence levels are reversed
             data.responseConfidence = (6 - data.response) % 3;
         }
+        data.expected_response = Number(!data.novel_probe)
         data.accuracy = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
     },
 };
