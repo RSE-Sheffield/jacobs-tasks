@@ -85,10 +85,10 @@ const expt4_response = {
         data.probe_seen = data.response < 3;
         // Seperate out different confidence levels
         if (data.probe_seen === 1) {
-            data.responseConfidence = data.response % 3;
+            data.response_confidence = data.response % 3;
         } else {
             // 2nd half of confidence levels are reversed
-            data.responseConfidence = (6 - data.response) % 3;
+            data.response_confidence = (6 - data.response) % 3;
         }
         data.expected_response = Number(!data.novel_probe)
         data.accuracy = ((data.novel_probe & !data.probe_seen) | (!data.novel_probe & data.probe_seen));
