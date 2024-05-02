@@ -43,7 +43,7 @@ const expt3_trial = {
         stimArray.push(targetStim);
 
         // Generate and display scores
-        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["correct"], 0);
+        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["accuracy"], 0);
 
         const scoreText = {
             obj_type: 'text',
