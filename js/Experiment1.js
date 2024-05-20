@@ -102,11 +102,11 @@ const expt1_probe = {
     on_finish: function(data) {
 
         let nStimuli = stimArray.length;
-        data.correct = data.response == data.expected_response;
+        data.accuracy = Number(data.response == data.expected_response);
         data.nItems = nStimuli;
         
         // Update nStimuli based on staircase rules set in config file
-        if (data.correct) {
+        if (data.accuracy) {
             correctCount += 1;
             if (correctCount == expt1_config.staircaseUp) {
                 [correctCount, incorrectCount] = [0, 0];

@@ -43,7 +43,7 @@ const expt3_trial = {
         stimArray.push(targetStim);
 
         // Generate and display scores
-        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["correct"], 0);
+        var currScore = jsPsych.data.allData.trials.filter(trial => trial.screen === "array").reduce((sum, obj) => sum + obj["accuracy"], 0);
 
         const scoreText = {
             obj_type: 'text',
@@ -144,13 +144,13 @@ const expt3_trial = {
         data.response = clickedColour;
         if (clickedColour === "") {
             // No Response
-            data.correct = 0;
+            data.accuracy = 0;
         } else if (clickedColour === targetColour) {
             // Correct response
-            data.correct = 1;
+            data.accuracy = 1;
         } else {
             // Incorrect response
-            data.correct = -1;
+            data.accuracy = -1;
         }
         clickedColour = "";
     },
