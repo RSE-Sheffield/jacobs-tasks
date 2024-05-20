@@ -14,6 +14,7 @@
     <script src="js/functions/shared_func.js"></script>
     <script src="js/functions/image_func.js"></script>
     <script src="js/functions/position_func.js"></script>
+    <script src="config/prolific_config.js"></script>
     <script src="config/expt1_config.js"></script>
     <script src="config/expt2_config.js"></script>
     <script src="config/expt3_config.js"></script>
@@ -29,11 +30,32 @@
     <canvas id="canvas" width="800" height="600"></canvas>
     <script>
 
-      const jsPsych = initJsPsych();
+      const jsPsych = initJsPsych({
+        on_finish: function(){
+
+          let completeCode = prolific_config["completeCode"]
+          if (completeCode !== undefined | completeCode !== "") {
+            window.location = `https://app.prolific.co/submissions/complete?cc=${completeCode}`
+          }
+        }
+      });
       var jspRand = jsPsych.randomization
-
       var pavloviaInfo;
+      const canvas = document.getElementById("canvas");
+      const imgSize = [96, 96];
+      const mainTimeline = [];
 
+      // capture info from Prolific
+      var prolific_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+      var study_id = jsPsych.data.getURLVariable('STUDY_ID');
+      var session_id = jsPsych.data.getURLVariable('SESSION_ID');
+
+      jsPsych.data.addProperties({
+        prolific_id: prolific_id,
+        study_id: study_id,
+        session_id: session_id
+      });
+      
       var pavlovia_init = {
         type: jsPsychPavlovia,
         command: "init",
@@ -53,17 +75,17 @@
             name: "ID"
           }
         ],
-        on_load: function() {
-          document.getElementById("input-0").value = identifier; 
+      }
+
+      const enter_ID_node = {
+        timeline: [enter_ID],
+        conditional_function: function() {
+            return prolific_id === undefined
         }
       }
-      
-      const canvas = document.getElementById("canvas");
-      const imgSize = [96, 96];
-      const mainTimeline = [];
 
       mainTimeline.push(pavlovia_init)
-      mainTimeline.push(enter_ID)
+      mainTimeline.push(enter_ID_node)
     </script>
     <script src="js/preloadImgs.js"></script>
     <script src="js/Experiment1.js"></script>
@@ -75,10 +97,14 @@
         type: jsPsychPavlovia,
         command: "finish",
         participantId: function() {
-          return jsPsych.data.get().
-            filter({trial_type: 'survey-text'}).
-            select("response").
-            values[0].ID;
+          if (prolific_id !== undefined) {
+            return prolific_id
+          } else {
+            return jsPsych.data.get().
+              filter({trial_type: 'survey-text'}).
+              select("response").
+              values[0].ID;
+          }
         },
       };
       mainTimeline.push(pavlovia_finish);
@@ -90,6 +116,22 @@
         trial_duration: 1500,
       } 
       mainTimeline.push(expt_complete);
+
+      var redirect_prolific = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: prolific_config["redirectMessage"],
+        choices: ["Continue"],
+        trial_duration: 5000,
+      } 
+      
+      const redirect_prolific_node = {
+        timeline: [redirect_prolific],
+        conditional_function: function() {
+          return (completeCode !== undefined | completeCode !== "") & prolific_config["redirectScreen"]
+        }
+      }
+      
+      mainTimeline.push(redirect_prolific_node);
 
       jsPsych.run(mainTimeline)
     </script>
