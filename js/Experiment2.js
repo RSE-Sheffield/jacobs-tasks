@@ -1,4 +1,5 @@
 const e2pos = Array.from({length: expt2_config.nPositions}, (_value, index) => (index));
+const re = /Picture\d+\.png/
 
 var usedStims, key;
 var targetsUsed = {};
@@ -179,6 +180,9 @@ const expt2_array = {
         if (!(key in targetsUsed)) targetsUsed[key] = [];
 
         // Stimuli aren't saved here yet as what gets saved will depend on probe
+    },
+    on_finish: function(data) {
+        data.stimulus = usedStims.map((x) => x.match(re)[0])
     },
     trial_duration: function(){
         let consolTime = genTime(
