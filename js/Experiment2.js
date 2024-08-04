@@ -65,7 +65,11 @@ const meta_capacity = {
     response_ends_trial: false,
     button_html: '<button class="jspsych-btn">%choice%</button>',
     data: {
-        screen: "meta"
+        screen: "meta",
+        metaType: jsPsych.timelineVariable('metaOptions')
+    },
+    on_finish: function(data) {
+        data.stimulus = jsPsych.current_trial.choices
     }
 };
 
