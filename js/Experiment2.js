@@ -87,7 +87,7 @@ const feedback = {
         // Instead, this function will check the accuracy of the last response and use that information to set
         // the stimulus value on each trial.
         if (jsPsych.timelineVariable('showFeedback')) {
-            var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+            var last_trial_correct = jsPsych.data.get().last(1).values()[0].accuracy;
             if(last_trial_correct) {
                 return '<img src=' +expt2_config.feedbackImgs[0]+ ' width="200" height="200"><h2>Correct!</h2>'; // the parameter value has to be returned from the function
             } else {
@@ -216,9 +216,9 @@ const expt2_response = {
         const novel_probe = jsPsych.timelineVariable('novel_probe');
 
         if (novel_probe) {
-            probe.file = usedStims.pop();
-        } else {
             probe.file = allStims.pop();
+        } else {
+            probe.file = usedStims.pop();
         }
 
         return [probe]
